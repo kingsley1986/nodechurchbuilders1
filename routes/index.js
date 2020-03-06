@@ -3,7 +3,9 @@ const mongoose = require('mongoose');
 
 var router = express.Router();
 
-mongoose.connect("mongodb://localhost:27017/churchbuilder1db", {useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true });
+
+
+mongoose.connect( process.env.MONGOLAB_URI || "mongodb://localhost:27017/churchbuilder1db", {useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true });
 // sudo rm /usr/bin/dpkg 
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
