@@ -3,9 +3,6 @@ const mongoose = require('mongoose');
 
 var router = express.Router();
 
-
-
-mongoose.connect( process.env.MONGOLAB_URI || "mongodb://localhost:27017/churchbuilder1db", {useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true });
 // sudo rm /usr/bin/dpkg 
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
@@ -30,7 +27,7 @@ router.post("/makepost", (req, res) => {
   var myData = new Post(req.body);
   myData.save()
   .then(item => {
-    res.redirect('/getposts');
+    res.redirect('/posts');
   })
   .catch(err => {
     res.status(400).send("unable to save to database");
@@ -40,17 +37,42 @@ router.post("/makepost", (req, res) => {
 
 
 // Get a Post
-router.get('/getposts', function(req, res, next) {
+router.get('/posts', function(req, res, next) {
   Post.find()
     .then(function(doc) {
       res.render('postlists', {items: doc});
     });
 });
 
+// Delete post
+
+
+router.delete( '/post/:id', function( req, res ){
+  const ObjectId = mongoose.Types.ObjectId;
+
+  let query = {_id:new ObjectId(req.params.id)}
+
+  Post.deleteOne(query, function(err) {
+    if(err){
+      console.log(err);
+    }
+    res.send('Success');
+  });
+})
+
+
+
+
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+router.get('/', ensureAunthenticated, function(req, res, next) {
+  res.render('index', { title: 'Members' });
 });
 
+function ensureAunthenticated(req, res, next) {
+  if(req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect('/users/login');
+}
 module.exports = router;

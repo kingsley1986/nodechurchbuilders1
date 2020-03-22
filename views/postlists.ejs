@@ -4,9 +4,13 @@
         <li><%= item.body %></li>
         <li><%= item.author %></li>
         <li><%= item.date %></li>
+        <li><a class="delete-article" href="#" data-id="<%=item.id%>">Delete</a></li>
     </ul>
-<% });%>
+   
 
+<% });%>
+<%= items.length %>
+<li><a href="/newpost">Add New Post</a></li>
 
 
 
