@@ -76,22 +76,25 @@ router.post('/register', upload.single('profileimage'), function(req, res, next)
   req.checkBody('email', 'Email field is required').isEmail();
   req.checkBody('username', 'Username field is required').notEmpty();
   req.checkBody('password', 'password field is required').notEmpty(); 
-  req.checkBody('password2', 'passwords field is required').equals(req.body.password);
+  req.checkBody('password2', 'password do not match').equals(req.body.password);
 
   // check Errors
   var errors = req.validationErrors();
 
   User.findOne({
     email: req.body.email,
-  }, function (err, user) {
+    }, function (err, user) {
     if (user) {
       req.flash('error', 'user already exists');
-        res.render('register');
-      }else if(errors) {
+      res.render('register');
+    }else if(errors) {
         res.render('register', {
-          errors: errors
+        errors: errors
         });
-    }else {
+    }else if (password.length < 6) {
+      req.flash('error', 'password must be at least 6 characters');
+      res.render('register');
+      }else {
     var newUser = new User({
       name: name,
       email: email,
@@ -108,7 +111,6 @@ router.post('/register', upload.single('profileimage'), function(req, res, next)
     } 
   });
 });
-
 
 router.get('/logout', function(req, res) {
   req.logout();
