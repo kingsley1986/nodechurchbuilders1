@@ -85,7 +85,7 @@ router.post('/register', upload.single('profileimage'), function(req, res, next)
     email: req.body.email,
     }, function (err, user) {
     if (user) {
-      req.flash('error', 'user already exists');
+      req.flash('error', 'user already exists',  req.body.email);
       res.render('register');
     }else if(errors) {
         res.render('register', {
