@@ -1,0 +1,18 @@
+<h1><%= post.title %></h1>
+<p><%= post.body %></p>
+<h4><%= post.date %></h4>
+<% const counter = post.comments.length >= 2 ? "Comments" : "Comment"; %>
+    <a class="show-article" href="/post/<%=post.id%>/comments" ><%= post.comments.length%><%= counter %></a>
+<% %>
+<% post.comments.forEach(item => { %>
+  <ul>
+      <li><%= item.body %></li>
+  </ul>
+<% });%>
+
+<form action="/posts/<%=post._id%>/comment" method="post">
+  <textarea class='form-control' name="body" placeholder="Comment"></textarea>
+  <div class="text-right">
+      <button type="submit" class="btn btn-primary">Comment</button>
+  </div>
+</form>
