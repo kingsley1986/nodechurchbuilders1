@@ -52,14 +52,16 @@ router.post("/posts/:postId/comment", async(req, res) => {
   const comment = new Comment();
   comment.body = req.body.body;
   comment.post = post._id;
-  await comment.save();
+  if(req.body.body) {
+    await comment.save();
 
-  post.comments.push(comment._id);
-  await post.save();
+    post.comments.push(comment._id);
+    await post.save();
 
-  res.render('post_show',{
-    "post": post
-  });
+    res.redirect('back');
+  }else{
+    res.redirect('back')
+  }
 });
 
 
