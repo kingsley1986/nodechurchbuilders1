@@ -29,13 +29,13 @@
 <div class="row">
 <div class="col-md-12">
 
-<form action="" method="POST" id="commentform">
+<form action="/posts/<%=post._id%>/comment" method="post" id="commentform">
 
 <div id="comment-name" class="form-row">
-<input type = "text" placeholder = "Name (required)" name = "dname"  id = "name" >
+<input type = "text" placeholder = "Name (required)" name="name"  id="name" >
 </div>
 <div id="comment-message" class="form-row">
-<textarea name = "comment" placeholder = "Message" id = "comment" ></textarea>
+<textarea name="body" placeholder = "Message" id="comment" ></textarea>
 </div>
 <a href="#"><input type="submit" name="dsubmit" id="commentSubmit" value="Submit Comment"></a>
 <p1><b>Notify me when new comments are added.</b></p1>

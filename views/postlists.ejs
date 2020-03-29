@@ -4,6 +4,7 @@
         <li><%= item.body %></li>
         <li><%= item.author %></li>
         <li><%= item.date %></li>
+        <img src="<%= item.profileimage %>" alt="image">
         <li><a class="show-article" href="/post/<%=item.id%>/comments" >Show</a></li>
         <li><a class="delete-article" href="#" data-id="<%=item.id%>">Delete</a></li>
     </ul>

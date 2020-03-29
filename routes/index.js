@@ -3,6 +3,11 @@ const mongoose = require('mongoose');
 
 var router = express.Router();
 
+//for uploading image
+var multer = require('multer');
+var upload = multer({dest: './uploads'});
+const fs = require('fs');
+
 // sudo rm /usr/bin/dpkg 
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
@@ -11,6 +16,7 @@ const BlogPost = new Schema({
   author: ObjectId,
   title: String,
   body: String,
+  profileimage: Buffer,
   date: { type: Date, default: Date.now },
   comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }]
 
@@ -33,16 +39,20 @@ router.get('/newpost', function(req, res, next) {
 });
 
 //create a post
-router.post("/makepost", (req, res) => {
+router.post("/makepost", upload.single('profileimage'), async (req, res) => {
 
-  var myData = new Post(req.body);
-  myData.save()
-  .then(item => {
-    res.redirect('/posts');
-  })
-  .catch(err => {
-    res.status(400).send("unable to save to database");
-  });
+  const newPost = new Post(req.body);
+  if (req.file) {         
+      const imgBuffer = await fs.promises.readFile(req.file.path); // TODO add error handling
+      newPost.profileimage = imgBuffer;
+      console.log(newPost)
+  }
+  try {
+      await newPost.save();
+      res.redirect('/posts');
+  }catch(err) {
+      res.status(400).send("unable to save to database");
+  }
 });
 
 // CREATE Comment
