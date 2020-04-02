@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
-mongoose.connect( process.env.MONGOLAB_URI || "mongodb://localhost:27017/churchbuilder1db", {useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true });
-var db = mongoose.connect;
+const userImageBasePath = 'uploads/userImages'
+const path = require('path')
+require('dotenv').config()
 
 //User Schema 
 var UserSchema = mongoose.Schema({
@@ -23,7 +24,14 @@ var UserSchema = mongoose.Schema({
     }
 });
 
+UserSchema.virtual('userImagePath').get(function() {
+    if(this.profileimage != null) {
+        return path.join('/', userImageBasePath, this.profileimage)
+    }
+})
+
 var User = module.exports = mongoose.model('User', UserSchema);
+module.exports.userImageBasePath = userImageBasePath
 
 module.exports.getUserById = function(id, callback){
     User.findById(id, callback);

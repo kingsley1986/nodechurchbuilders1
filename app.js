@@ -1,3 +1,8 @@
+if (process.env.NODE_ENV !==  'production') {
+  const dotenv = require('dotenv').config();
+
+}
+
 var createError = require('http-errors');
 var express = require('express');
 var expressLayouts = require('express-ejs-layouts');
@@ -16,18 +21,33 @@ var upload = multer({dest: './uploads'});
 var flash = require('connect-flash');
 var bcrypt = require('bcryptjs');
 var mongoose = require('mongoose');
-var db = mongoose.connection; 
+
 
 
 var indexRouter = require('./routes/index');
+var postRouter = require('./routes/posts');
+var commentRouter = require('./routes/comments');
 var usersRouter = require('./routes/users');
 
-var app = express();
+mongoose.connect(process.env.DATABASE_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
+const db = mongoose.connection
+db.on('error', error => console.log(error)) 
+db.once('open', () => console.log('connectd to Mongoose'))
 
+
+var app = express();
+app.use(require('connect-flash')());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(expressLayouts);
+
+app.use(express.static('./uploads'));
+app.use(flash());
+
 
 
 
@@ -35,7 +55,8 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('public'))
+// app.use(express.static(path.join(__dirname, 'public')));
 
 // Handle Session
 app.use(session({
@@ -67,7 +88,7 @@ app.use(expressValidator({
     }
 }));
 
-app.use(require('connect-flash')());
+
 app.use(function (req, res, next) {
   res.locals.messages = require('express-messages')(req, res);
   next();
@@ -78,9 +99,11 @@ app.get('*', function(req, res, next) {
   next();
 });
 
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
+app.use('/posts', postRouter);
+app.use('', commentRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

@@ -1,17 +1,35 @@
 var express = require('express');
 var router = express.Router();
-var multer = require('multer');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-
-// handle file uploads
-var upload = multer({dest: './uploads'});
-
 var User = require('../models/user');
 
+// handle file uploads
+const fs = require('fs')
+const multer  = require('multer')
+const path =  require('path')
+const uploadPath = path.join('public', User.userImageBasePath)
+const imageMineTypes = ['image/jpeg', 'image/png', 'image/gif']
+
+const upload = multer({ 
+  dest: uploadPath,
+  fileFilter:  (req, file, callback) => {
+    callback(null, imageMineTypes.includes(file.mimetype) )
+  }
+})
+
+
+
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+router.get('/', async (req, res) => {
+  try {
+    const users =  await User.find({})
+    res.render('showusers', {
+      users: users
+    });
+  } catch {
+    res.redirect('/')
+  }
 });
 
 router.get('/register', function(req, res, next) {
@@ -55,6 +73,8 @@ passport.deserializeUser(function(id, done) {
   });
 }));
 
+
+
 router.post('/register', upload.single('profileimage'), function(req, res, next) {
   var name = req.body.name;
   var email = req.body.email;
@@ -78,6 +98,9 @@ router.post('/register', upload.single('profileimage'), function(req, res, next)
   req.checkBody('password', 'password field is required').notEmpty(); 
   req.checkBody('password2', 'password do not match').equals(req.body.password);
 
+
+  const fileName = req.file != null ? req.file.filename : null
+
   // check Errors
   var errors = req.validationErrors();
 
@@ -100,7 +123,7 @@ router.post('/register', upload.single('profileimage'), function(req, res, next)
       email: email,
       username: username,
       password: password,
-      profileimage: profileimage
+      profileimage: fileName
     });
     User.createUser(newUser, function(err, user){
       if(err) throw err;
