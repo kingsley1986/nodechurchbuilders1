@@ -4,6 +4,7 @@ const Post = require('../models/post')
 const fs = require('fs')
 const multer  = require('multer')
 const path =  require('path')
+
 const uploadPath = path.join('public', Post.postImageBasePath)
 const imageMineTypes = ['image/jpeg', 'image/png', 'image/gif']
 
@@ -76,28 +77,29 @@ router.get("/:id/edit", async (req, res) => {
   });
 });
 
-router.post("/:id/update", async (req, res) => {
-  Post.findByIdAndUpdate(req.params.id, req.body, (err, post) => {
- 
-    post.title = req.body.title; //so on and so forth
-    post.description = req.body.description;
+router.put("/:id/update", function(req, res){
+  Post.findById(req.params.id, function(err, post){
+    post.description = req.body.description
+    post.title = req.body.title
     post.from = req.body.from
-    // then save that postument
-    if (post.save()) {
-    console.log(post)
-    res.render('posts/index')
-    }else{ throw err
-    }
+    post.save(function(err){
+      if(err){
+        console.log(err)
+        res.redirect("back")
+      }else {
+        res.render("posts/index")
+      }
+    })
   })
-});
+})
+
 
 // Delete post
 
-router.delete( "/:id/delete", function( req, res ){
-  console.log(req)
-  console.log("dkjdkjfdkjfkdjfkdj")
+
+router.delete( '/:id', function( req, res ){
   const ObjectId = mongoose.Types.ObjectId;
-  console.log("kdjkdjkdjkfdj")
+
   let query = {_id:new ObjectId(req.params.id)}
 
   Post.deleteOne(query, function(err) {

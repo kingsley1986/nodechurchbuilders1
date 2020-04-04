@@ -20,6 +20,7 @@ var multer = require('multer');
 var upload = multer({dest: './uploads'});
 var flash = require('connect-flash');
 var bcrypt = require('bcryptjs');
+const methodOverride = require('method-override');
 var mongoose = require('mongoose');
 
 
@@ -100,6 +101,7 @@ app.get('*', function(req, res, next) {
 });
 
 
+app.use(methodOverride('_method'));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/posts', postRouter);
