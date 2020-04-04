@@ -16,7 +16,6 @@ $(document).ready(function() {
     }); 
 });
 
-
 //Hiding and showing comments
 
 $(document).ready(function() {

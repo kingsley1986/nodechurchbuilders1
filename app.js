@@ -28,6 +28,7 @@ var mongoose = require('mongoose');
 var indexRouter = require('./routes/index');
 var postRouter = require('./routes/posts');
 var commentRouter = require('./routes/comments');
+var programRouter = require('./routes/programs');
 var usersRouter = require('./routes/users');
 
 mongoose.connect(process.env.DATABASE_URL, {
@@ -106,6 +107,8 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/posts', postRouter);
 app.use('', commentRouter);
+app.use('/programs', programRouter);
+ 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

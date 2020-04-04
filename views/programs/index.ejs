@@ -1,0 +1,14 @@
+<% programs.forEach(program => { %>
+    <ul>
+        <li><img height="150" width="100" src="<%= program.programImagePath %>"></li>
+        <h1><%=program.title%></h1>
+        <li><%= program.description %></li>
+        <li><%= program.from %></li>
+        <li><%= program.createdAt %></li>
+        <li><a class="update-article" href="/programs/<%=program.id%>/edit" >edit</a></li>
+        <li><a class="delete-article" href="#" data-id="<%=program.id%>">Delete</a></li>
+    </ul>
+   
+<% });%>
+<%= programs.length %>
+<li><a href="/programs/new">Add New Post</a></li>
