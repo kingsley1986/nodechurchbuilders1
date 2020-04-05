@@ -27,6 +27,18 @@ router.get('/', async (req, res) => {
   }
 });
 
+
+router.get('/:id', async (req, res) => {
+  try {
+    const program =  await Program.findById(req.params.id)
+    res.render('programs/show', {
+      program: program
+    });
+  } catch {
+    res.redirect('/params')
+  }
+});
+
 // New blogpost routes
 router.get('/new', async (req, res, next) => {
     res.render("programs/new");

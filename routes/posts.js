@@ -5,6 +5,7 @@ const fs = require('fs')
 const multer  = require('multer')
 const path =  require('path')
 
+
 const uploadPath = path.join('public', Post.postImageBasePath)
 const imageMineTypes = ['image/jpeg', 'image/png', 'image/gif']
 
@@ -65,7 +66,7 @@ router.get("/:id/comments", async (req, res) => {
   });
 })
 
-router.get("/:id/edit", async (req, res) => {
+router.get("/edit/:id", async (req, res) => {
   Post.findById(req.params.id, function(err, post) {
     if (!post) {
       return next(new Error('Could not load Document'));
@@ -77,23 +78,24 @@ router.get("/:id/edit", async (req, res) => {
   });
 });
 
-router.post("/:id", function(req, res){
-  Post.findById(req.params.id, function(err, post){
-    console.log(post)
-    post.description = req.body.description
-    post.title = req.body.title
-    post.from = req.body.from
-    console.log(post)
-    post.save(function(err){
-      if(err){
-        console.log(err)
-        res.redirect("back")
-      }else {
-        res.render("posts/index")
-      }
-    })
-  })
-})
+router.post('/edit/:id', upload.single('cover'), async (req, res, next) => {
+ const fileName = req.file != null ? req.file.filename : null
+ console.log(req.body)
+  let post = {};
+  post.title = req.body.title;
+  post.description = req.body.description;
+  post.from = req.body.from;
+  post.postImage = fileName
+  let query = {_id: req.params.id}
+   Post.updateOne(query, post,  (err, post) => {
+    if(err){
+      console.log(err)
+      res.redirect("back");
+    }else {
+     res.redirect("/posts");
+    }
+  });
+});
 
 
 // Delete post

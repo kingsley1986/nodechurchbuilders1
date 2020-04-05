@@ -27,7 +27,8 @@ const ObjectId = Schema.ObjectId;
     programImage: {
         type: String,
         require: true
-    }
+    },
+    comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }]
  })
 
 
