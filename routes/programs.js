@@ -35,24 +35,38 @@ router.get('/new', async (req, res, next) => {
 // Create blogpost routes
 router.post('/create', upload.single('cover'), async (req, res, next) => {
   const fileName = req.file != null ? req.file.filename : null
-     const program = new Program({
-       title: req.body.title,
-       description: req.body.description,
-       programImage: fileName
-   
-     })
-     try {
-         console.log(program)
-        const programs = await program.save()
-        res.redirect("/programs")
+  const program = new Program({
+    programtype: req.body.programtype,
+    title: req.body.title,
+    description: req.body.description,
+    programImage: fileName 
+  })
+  try {
+    console.log(program)
+      const programs = await program.save()
+      res.redirect("/programs")
     
-      } catch {
-        if (program.programImage != null) {
-          removeprogramImage(program.programImage)
-        }
-        res.render("programs/new")
-      }
-    });
+    } catch {
+      if (program.programImage != null) {
+        removeprogramImage(program.programImage)
+    }
+      res.render("programs/new")
+  }
+});
+
+
+router.delete( '/:id', function( req, res ){
+  const ObjectId = mongoose.Types.ObjectId;
+
+  let query = {_id:new ObjectId(req.params.id)}
+
+  Program.deleteOne(query, function(err) {
+    if(err){
+      console.log(err);
+    }
+    res.send('Success');
+  });
+})
 
 
 
@@ -63,4 +77,6 @@ function removeprogramImage(fileName) {
   })
 }
 
+
+global.ACTIVITIES = ["Youths", "Children"]
 module.exports = router;

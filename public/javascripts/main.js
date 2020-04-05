@@ -16,6 +16,37 @@ $(document).ready(function() {
     }); 
 });
 
+
+
+
+//deleting program with Ajax
+$(document).ready(function() {
+    $('.delete-program').on('click', function(e) {
+       const $target = $(e.target);
+        const id = $target.attr('data-id');
+        $.ajax({
+            type: 'DELETE',
+            url: '/programs/'+id,
+            success: function(response) {
+                window.location.href='/programs';
+            },
+            error: function(err){
+                console.log(err);
+            }
+        });
+    }); 
+});
+
+//for program selection of type
+var select = document.getElementById("selectNumber");
+var options = ["Youths", "Children", "YouthsHomeCell"];
+for(var i = 0; i < options.length; i++) {
+    var opt = options[i];
+    var el = document.createElement("option");
+    el.textContent = opt;
+    select.appendChild(el);
+}
+
 //Hiding and showing comments
 
 $(document).ready(function() {
