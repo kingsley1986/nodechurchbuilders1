@@ -21,7 +21,7 @@ var upload = multer({dest: './uploads'});
 var flash = require('connect-flash');
 var bcrypt = require('bcryptjs');
 const methodOverride = require('method-override');
-var mongoose = require('mongoose');
+global.mongoose = require('mongoose');
 
 
 

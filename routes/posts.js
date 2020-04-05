@@ -77,11 +77,13 @@ router.get("/:id/edit", async (req, res) => {
   });
 });
 
-router.put("/:id/update", function(req, res){
+router.post("/:id", function(req, res){
   Post.findById(req.params.id, function(err, post){
+    console.log(post)
     post.description = req.body.description
     post.title = req.body.title
     post.from = req.body.from
+    console.log(post)
     post.save(function(err){
       if(err){
         console.log(err)
