@@ -101,6 +101,7 @@ router.delete( '/:id', function( req, res ){
   const ObjectId = mongoose.Types.ObjectId;
 
   let query = {_id:new ObjectId(req.params.id)}
+  console.log(query)
 
   Post.deleteOne(query, function(err) {
     if(err){
