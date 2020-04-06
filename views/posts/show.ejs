@@ -9,8 +9,11 @@
   <div class="postcomments" ><% post.comments.forEach(item => { %>
     <ul >
       <li><%= item.description %></li>
+      <a class="delete-comment" href="#" data-id="<%=post.id%>/<%=item._id%>">Delete</a>
+
     </ul>
-  <% });%></div>
+  <% });%>
+  </div>
 </div>
 
 

@@ -6,7 +6,7 @@ const Post = require('../models/post')
 const fs = require('fs')
 
 // CREATE Comment
-router.post("/posts/:postId/comment", async(req, res) => {
+router.post("/:postId/comment", async(req, res) => {
     const post = await Post.findOne({_id: req.params.postId});
   
     const comment = new Comment();
@@ -25,6 +25,29 @@ router.post("/posts/:postId/comment", async(req, res) => {
     }
   });
   
+
+  router.delete("/comments/:postId/:commentId", async function (req, res) {
+    try {
+      const post = await Post.findByIdAndUpdate(
+        req.params.postId,
+        {
+          $pull: { comments: req.params.commentId },
+        },
+        { new: true }
+      );
+  
+      if (!post) {
+        return res.status(400).send("Post not found");
+      }
+  
+      await Comment.findByIdAndDelete(req.params.commentId);
+  
+      res.send("Success");
+    } catch (err) {
+      console.log(err);
+      res.status(500).send("Something went wrong");
+    }
+  });
 
 
   

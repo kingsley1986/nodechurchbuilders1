@@ -28,20 +28,21 @@ router.get('/', async (req, res) => {
 });
 
 
-router.get('/:id', async (req, res) => {
+router.get('/:id/show', async (req, res) => {
   try {
     const program =  await Program.findById(req.params.id)
     res.render('programs/show', {
       program: program
     });
   } catch {
-    res.redirect('/params')
+    res.redirect('/programs')
   }
 });
 
-// New blogpost routes
+// New Program routes
 router.get('/new', async (req, res, next) => {
-    res.render("programs/new");
+  renderNewPage(res, new Program())
+
 });
 
 // Create blogpost routes
@@ -66,6 +67,37 @@ router.post('/create', upload.single('cover'), async (req, res, next) => {
   }
 });
 
+router.get("/:id/:edit", async (req, res) => {
+  Program.findById(req.params.id, function(err, program) {
+    if (!program) {
+      return next(new Error('Could not load Document'));
+    }else {
+      res.render('programs/edit',{
+        "program": program
+      });
+    }
+  });
+});
+
+router.post('/edit/:id', upload.single('cover'), async (req, res, next) => {
+  const fileName = req.file != null ? req.file.filename : null
+  console.log(req.body)
+   let program = {};
+   program.programtype = req.body.programtype
+   program.title = req.body.title;
+   program.description = req.body.description;
+   program.programImage = fileName
+   let query = {_id: req.params.id}
+    Program.updateOne(query, program,  (err, program) => {
+     if(err){
+       console.log(err)
+       res.redirect("back");
+     }else {
+      res.redirect("/programs");
+     }
+   });
+ });
+
 
 router.delete( '/:id', function( req, res ){
   const ObjectId = mongoose.Types.ObjectId;
@@ -87,6 +119,20 @@ function removeprogramImage(fileName) {
   fs.unlink(path.join(uploadPath, fileName), err =>  {
     if (err) console.log(err)
   })
+}
+
+
+//Handles the redirects
+async function renderNewPage(res, program, hasError = false) {
+  try {
+    const params = {
+      program: program
+    }
+    if (hasError) params.errorMessage = 'Error Creating program'
+    res.render('programs/new', params)
+  } catch {
+    res.redirect('/programs')
+  }
 }
 
 

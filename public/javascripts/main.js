@@ -16,6 +16,23 @@ $(document).ready(function() {
     }); 
 });
 
+//deleting comment with Ajax
+$(document).ready(function() {
+    $('.delete-comment').on('click', function(e) {
+       const $target = $(e.target);
+        const id = $target.attr('data-id');
+        $.ajax({
+            type: 'DELETE',
+            url: '/posts/comments/'+id,
+            success: function(response) {
+                window.location.href='/posts';
+            },
+            error: function(err){
+                console.log(err);
+            }
+        });
+    }); 
+});
 
 
 
@@ -51,6 +68,7 @@ for(var i = 0; i < options.length; i++) {
 
 $(document).ready(function() {
     $('.show-comments').on('click', function() {
+        alert("i am here")
        
         $('.postcomments').toggle();
     })

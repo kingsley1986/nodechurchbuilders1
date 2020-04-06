@@ -103,7 +103,6 @@ router.post('/edit/:id', upload.single('cover'), async (req, res, next) => {
 
 router.delete( '/:id', function( req, res ){
   const ObjectId = mongoose.Types.ObjectId;
-
   let query = {_id:new ObjectId(req.params.id)}
   console.log(query)
 

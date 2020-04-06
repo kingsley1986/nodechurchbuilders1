@@ -1,16 +1,16 @@
 <div>
     <label>Type</label>
-    <select name="programtype" id="selectNumber">
-        <option>Choose</option>
+    <select name="programtype" id="selectNumber" >
+        <option ><%= program.programtype%></option>
     </select>
 </idv>
 <div>
     <label>Title</label>
-    <input name="title">
+    <input name="title" value="<%= program.title %>">
 </div>
 <div>
     <label>Description</label>
-    <textarea name="description"></textarea>
+    <textarea name="description" ><%= program.title %></textarea>
 </div>
 
 <div>
