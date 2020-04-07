@@ -3,8 +3,10 @@
         <li><img height="150" width="100" src="<%= event.eventImagePath %>"></li>
         <h1><%=event.title%></h1>
         <li><%= event.description %></li>
-        <li><%= event.startingDate %></li>
+        <li><%= event.startingDate%></li>
         <li><%= event.closingDate %></li>
+        <% hell = event.startingDate < event.closingDate ? "Yes" : "No" %>
+        <%= hell %>
         <li><a class="show-event" href="/events/<%=event.id%>/event" >Show</a></li>
         <li><a class="update-event" href="/events/<%=event.id%>/edit" >edit</a></li>
         <li><a class="delete-event" href="#" data-id="<%=event.id%>">Delete</a></li>

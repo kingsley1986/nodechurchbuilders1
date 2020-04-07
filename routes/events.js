@@ -27,6 +27,19 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.get('/lives', async (req, res) => {
+  try {
+    const lives =  await Event.find( { startingDate: { $lt: new Date()} } && { closingDate: { $gt: new Date()} } )
+    res.render('events/live', {
+      lives: lives
+    });
+  } catch {
+    res.render("events/live", {
+      lives: lives
+    });
+  }
+});
+
 // New blogpost routes
 router.get('/new', async (req, res, next) => {
   renderNewPage(res, new Event())
