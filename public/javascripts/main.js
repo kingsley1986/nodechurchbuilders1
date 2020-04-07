@@ -34,8 +34,6 @@ $(document).ready(function() {
     }); 
 });
 
-
-
 //deleting program with Ajax
 $(document).ready(function() {
     $('.delete-program').on('click', function(e) {
@@ -54,25 +52,24 @@ $(document).ready(function() {
     }); 
 });
 
-//for program selection of type
-var select = document.getElementById("selectNumber");
-var options = ["Youths", "Children", "YouthsHomeCell"];
-for(var i = 0; i < options.length; i++) {
-    var opt = options[i];
-    var el = document.createElement("option");
-    el.textContent = opt;
-    select.appendChild(el);
-}
+//for program selection of programtype
+$(window).on('load', function() {
+    var select = document.getElementById("selectNumber");
+    var options = ["Youths", "Children", "YouthsHomeCell"];
+    for(var i = 0; i < options.length; i++) {
+        var opt = options[i];
+        var el = document.createElement("option");
+        el.textContent = opt;
+        select.appendChild(el);
+    }
+   
+});
 
 //Hiding and showing comments
-
 $(document).ready(function() {
     $('.show-comments').on('click', function() {
-        alert("i am here")
-       
         $('.postcomments').toggle();
-    })
-  
+    }) 
 });
 
 // let menuBtn = document.querySelector(".show-comments");

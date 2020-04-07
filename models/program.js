@@ -8,7 +8,7 @@ const ObjectId = Schema.ObjectId;
 
  const programSchema = new mongoose.Schema({
     programtype: {
-         type: String,
+         type: String, 
          required: true
     },
     title: {

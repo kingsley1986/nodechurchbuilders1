@@ -69,9 +69,7 @@ router.delete( '/:id', function( req, res ){
   });
 })
 
-
-
-    //Removes unsaved post image
+//Removes unsaved post image
 function removeeventImage(fileName) {
   fs.unlink(path.join(uploadPath, fileName), err =>  {
     if (err) console.log(err)
@@ -91,5 +89,4 @@ async function renderNewPage(res, event, hasError = false) {
 }
 
 
-global.ACTIVITIES = ["Youths", "Children"]
 module.exports = router;
