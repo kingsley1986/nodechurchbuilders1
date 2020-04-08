@@ -27,6 +27,15 @@ router.get('/', async (req, res) => {
   }
 });
 
+
+// Get a single comment
+router.get("/:id", async (req, res) => {
+  const event = await Event.findOne({_id: req.params.id})
+  res.render('events/show',{
+    "event": event
+  });
+})
+
 router.get('/lives', async (req, res) => {
   try {
     const lives =  await Event.find( { startingDate: { $lt: new Date()} } && { closingDate: { $gt: new Date()} } )
@@ -102,7 +111,7 @@ router.delete( '/:id', function( req, res ){
   });
 })
 
-router.get("/:id/:edit", async (req, res) => {
+router.get("/edit/:id", async (req, res) => {
   Event.findById(req.params.id, function(err, event) {
     if (!event) {
       return next(new Error('Could not load Document'));

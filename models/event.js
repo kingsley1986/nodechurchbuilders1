@@ -31,8 +31,9 @@ const ObjectId = Schema.ObjectId;
     eventImage: {
         type: String,
         require: true
-    }
- })
+    },
+    goings: [{ type: Schema.Types.ObjectId, ref: 'Going' }]
+ });
 
 
 eventSchema.virtual('eventImagePath').get(function() {
