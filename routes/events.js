@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
       events: events
     });
   } catch {
-    res.redirect('/')
+    res.redirect('/events')
   }
 });
 
@@ -34,18 +34,38 @@ router.get('/lives', async (req, res) => {
       lives: lives
     });
   } catch {
-    res.render("events/live", {
-      lives: lives
-    });
+    res.redirect("/events");
   }
 });
 
-// New blogpost routes
+router.get('/upcomingevents', async (req, res) => {
+  try {
+    const upcomingevents =  await Event.find( { startingDate: { $gt: new Date()} })
+    res.render('events/upcomings', {
+      upcomingevents: upcomingevents
+    });
+  } catch {
+    res.redirect("/events");
+  }
+});
+
+router.get('/pastevents', async (req, res) => {
+  try {
+    const pastevents =  await Event.find( { closingDate: { $lt: new Date()} })
+    res.render('events/pastevents', {
+      pastevents: pastevents
+    });
+  } catch {
+    res.redirect("/events");
+  }
+});
+
+// New events routes
 router.get('/new', async (req, res, next) => {
   renderNewPage(res, new Event())
 });
 
-// Create blogpost routes
+// Create Events routes
 router.post('/create', upload.single('cover'), async (req, res, next) => {
   const fileName = req.file != null ? req.file.filename : null
   const event = new Event({
@@ -68,7 +88,7 @@ router.post('/create', upload.single('cover'), async (req, res, next) => {
   }
 });
 
-
+//Deleting an event
 router.delete( '/:id', function( req, res ){
   const ObjectId = mongoose.Types.ObjectId;
 
@@ -81,6 +101,39 @@ router.delete( '/:id', function( req, res ){
     res.send('Success');
   });
 })
+
+router.get("/:id/:edit", async (req, res) => {
+  Event.findById(req.params.id, function(err, event) {
+    if (!event) {
+      return next(new Error('Could not load Document'));
+    }else {
+      res.render('events/edit',{
+        "event": event
+      });
+    }
+  });
+});
+
+router.post('/edit/:id', upload.single('cover'), async (req, res, next) => {
+  const fileName = req.file != null ? req.file.filename : null
+  console.log(req.body)
+   let event = {};
+   event.title = req.body.title;
+   event.description = req.body.description;
+   event.eventImage = fileName
+   event.startingDate = req.body.startingDate
+   event.closingDate = req.body.closingDate
+   let query = {_id: req.params.id}
+    Event.updateOne(query, event,  (err, event) => {
+     if(err){
+       console.log(err)
+       res.redirect("back");
+     }else {
+      res.redirect("/events");
+     }
+   });
+ });
+
 
 //Removes unsaved post image
 function removeeventImage(fileName) {

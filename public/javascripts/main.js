@@ -52,6 +52,24 @@ $(document).ready(function() {
     }); 
 });
 
+//deleting program with Ajax
+$(document).ready(function() {
+    $('.delete-event').on('click', function(e) {
+       const $target = $(e.target);
+        const id = $target.attr('data-id');
+        $.ajax({
+            type: 'DELETE',
+            url: '/events/'+id,
+            success: function(response) {
+                window.location.href='/events';
+            },
+            error: function(err){
+                console.log(err);
+            }
+        });
+    }); 
+});
+
 //for program selection of programtype
 $(window).on('load', function() {
     var select = document.getElementById("selectNumber");

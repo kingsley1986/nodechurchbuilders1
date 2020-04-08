@@ -1,10 +1,10 @@
 <div>
     </div><label>Title</label>
-    <input type="text" name="title">
+    <input type="text" name="title" value="<%= event.title%>">
 </idv>
 <div>
     <label>Description</label>
-    <textarea name="description"></textarea>
+    <textarea name="description"><%= event.description%></textarea>
 </div>
 
 <div>
@@ -17,7 +17,7 @@
       <div class='col-sm-6'>
         <div class="form-group">
           <div class='input-group date' id='datetimepicker1'>
-            <input name="startingDate" type='text' class="form-control" />
+            <input name="startingDate" type='text' class="form-control" value="<%=event.startingDate%>" />
             <span class="input-group-addon">
               <span class="glyphicon glyphicon-calendar"></span>
             </span>
@@ -32,7 +32,7 @@
       <div class='col-sm-6'>
         <div class="form-group">
           <div class='input-group date' id='datetimepicker2'>
-            <input name="closingDate" type='text' class="form-control" />
+            <input name="closingDate" type='text' class="form-control" value="<%=event.closingDate%>" />
             <span class="input-group-addon">
               <span class="glyphicon glyphicon-calendar"></span>
             </span>
