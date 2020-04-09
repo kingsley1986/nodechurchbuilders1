@@ -1,6 +1,8 @@
 //deleting post with Ajax
 $(document).ready(function() {
     $('.delete-article').on('click', function(e) {
+        e.preventDefault();
+
        const $target = $(e.target);
         const id = $target.attr('data-id');
         $.ajax({
@@ -127,3 +129,103 @@ $(function () {
         $('#datetimepicker1').data("DateTimePicker").maxDate(e.date);
     });
 });
+
+
+
+$(document).ready(function() {
+    $('#goingevent').on('click', function(e) {
+       const $target = $(e.target);
+        const id = $target.attr('data-id');
+        $.ajax({
+            type: 'GET',
+            url: '/events/'+id+'/going',
+            success: function(response) {
+                window.location.href='/events/'+id+'/show';
+            },
+            error: function(err){
+                console.log(err);
+            }
+        });
+    }); 
+});
+
+
+
+
+// $(document).ready(function() {
+//     $('#mycoming_with').on('click', function(e) {
+//        const $target = $(e.target);
+//         const id = $target.attr('action');
+//         alert(id)
+//         $.ajax({
+//             type: 'POST',
+//             url: '/events/'+id+'/coming_with',
+//             success: function(response) {
+//                 window.location.href='/events/'+id+'/show';
+//             },
+//             error: function(err){
+//                 console.log(err);
+//             }
+//         });
+//     }); 
+// });
+
+
+
+//for event attendance
+let menu = document.querySelector("#thankyou");
+let menu2 = document.querySelector("#coming_with");
+let menu3 = document.querySelector("#chooseNumber");
+let menu4 = document.querySelector("#send_coming_with");
+let menu5 = document.querySelector("#goingevent");
+
+menu.style.display = "none";
+menu2.style.display = "none";
+menu3.style.display = "none";
+menu4.style.display = "none";
+
+$(document).ready(function() {
+    $('#goingevent').on('click', function() {
+        menu.style.display = "block";
+        menu5.style.display = "none";
+    }) 
+});
+
+$(document).ready(function() {
+    $('#yes').on('click', function() {
+        if(document.getElementById("yes").innerHTML === "Yes") {  
+            menu.style.display = "none";
+            menu2.style.display = "block";
+            menu3.style.display = "block"
+            menu4.style.display = "block"
+
+            var myArray = new Array("1", "2", "3", "4", "5");
+            // Get dropdown element from DOM
+            var dropdown = document.getElementById("chooseNumber");
+
+            // Loop through the array
+            for (var i = 0; i < myArray.length; ++i) {
+                // Append the element to the end of Array list
+                dropdown[dropdown.length] = new Option(myArray[i], myArray[i]);
+            }
+        }
+        
+    }) 
+    
+});
+
+
+$(document).ready(function() {
+    $('#no').on('click', function() {
+        if(document.getElementById("no").innerHTML === "No") {
+            location.reload();
+
+            menu.style.display = "none";
+            menu2.style.display = "none";
+            menu3.style.display = "none"
+            menu4.style.display = "none"
+        }
+    }) 
+});
+
+

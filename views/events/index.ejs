@@ -5,7 +5,7 @@
         <li><%= event.description %></li>
         <li><%= event.startingDate.toUTCString()%></li>
         <li><%= event.closingDate.toUTCString() %></li>
-        <li><a class="show-event" href="/events/<%=event.id%>" >Show</a></li>
+        <li><a class="show-event" href="/events/<%=event.id%>/show" >Show</a></li>
         <li><a class="update-event" href="/events/edit/<%=event.id%>" >edit</a></li>
         <li><a class="delete-event" href="#" data-id="<%=event.id%>">Delete</a></li>
     </ul>

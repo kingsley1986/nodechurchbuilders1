@@ -31,8 +31,13 @@ const ObjectId = Schema.ObjectId;
     eventImage: {
         type: String,
         require: true
+    }, 
+    going: {
+        type: Number, default: 0,
     },
-    goings: [{ type: Schema.Types.ObjectId, ref: 'Going' }]
+    coming_with: {
+        type: Number, default: 0,
+    }
  });
 
 

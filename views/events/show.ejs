@@ -4,9 +4,17 @@
   <p><%= event.description %></p>
   <h4><%= event.startingDate %></h4>
   <h4><%= event.closingDate %></h4>
-  <% const counter = event.goings.length >= 2 ? "People going" : "Person going"; %>
-  <button class="show-comments"><%= event.goings.length + " " + counter + "" %></button>
-  <span>Click Yes if you are coming</span>
-  <a class="goingevent" href="/events/<%=event.id%>/going" >Yes</a>
-</div>
+  <% const counter = event.going + event.coming_with >= 2 ? "People going" : "Person going"; %>
+  <button id="show-attendance"><%= event.going + event.coming_with + " " + counter + "" %></button>
+  <a id="goingevent" href="#" data-id="<%=event.id%>">Yes</a>
+  
+<p id="thankyou">Thank you, Are you coming with someone? <span id="yes" style="color:blue">Yes</span> <span id="no">No</span></p>
+<div id="coming_with"> choose how many people you want to come with</div>
 
+<form action="/events/<%=event.id%>/coming_with" method="POST" id="my_with">
+  <select name="coming_with" id="chooseNumber">
+    <option>Choose a number</option>
+  </select>
+  <button id="send_coming_with" type="submit">send</button>
+</form >
+</div>

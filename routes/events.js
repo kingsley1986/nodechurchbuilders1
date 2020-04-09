@@ -28,8 +28,8 @@ router.get('/', async (req, res) => {
 });
 
 
-// Get a single comment
-router.get("/:id", async (req, res) => {
+// // Get a single comment  
+router.get("/:id/show", async (req, res) => {
   const event = await Event.findOne({_id: req.params.id})
   res.render('events/show',{
     "event": event
@@ -163,5 +163,34 @@ async function renderNewPage(res, event, hasError = false) {
   }
 }
 
+
+router.get("/:id/going", async (req, res, next) => {
+  Event.findById(req.params.id, function(err, event) {
+    console.log("kdjkfdjkfdkj")
+    if (!event) {
+      return next(new Error('Could not load Document'));
+    }else {
+      event.going += 1;
+      event.save();
+      res.render("success")
+    }
+  });
+});
+
+router.post("/:id/coming_with", async (req, res, next) => {
+Event.findByIdAndUpdate({_id: req.params.id}, {$inc: { coming_with: req.body.coming_with} }, function(error, event)   {
+  console.log(event)
+  if(error) {
+    console.log(error)
+    res.render("events/show", {
+      event: event,
+    });
+  } else {
+    res.render("events/show", {
+      event: event,
+    });
+  }
+});
+});
 
 module.exports = router;
