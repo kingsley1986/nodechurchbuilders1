@@ -1,4 +1,4 @@
-<div class="co text-center">
+<div class="text-center">
   <li><img height="400" width="400" src="<%= event.eventImagePath %>"></li>
   <h1><%= event.title %></h1>
   <p><%= event.description %></p>
@@ -18,3 +18,48 @@
   <button id="send_coming_with" type="submit">send</button>
 </form >
 </div>
+
+<% const counter2 = event.eventcomments.length >= 2 ? "Comments" : "Comment"; %>
+<button class="show-comments"><%= event.eventcomments.length + " " + counter2 + "" %></button>
+<% %>
+<div class="postcomments" ><% event.eventcomments.forEach(item => { %>
+  <ul >
+    <li><%= item.description %></li>
+    <a class="delete-event-comment" href="#" data-id="<%=event.id%>/<%=item._id%>">Delete</a>
+
+  </ul>
+<% });%>
+</div>
+
+
+<!------------container------->
+
+<div class="container">
+
+  <!-------Wrap------------>
+  <div id="wrap">
+  
+  <p>Your email address will not be published. Required fields are marked *</p>
+  
+  <!------------Form Start---------->
+  
+  <div id='form'>
+  <div class="row">
+  <div class="col-md-12">
+  
+    <form action="/events/<%=event._id%>/eventcomment" method="post" id="commentform">
+  
+  <div id="comment-name" class="form-row">
+  <input type = "text" placeholder = "Name (required)" name="name"  id="name" >
+  </div>
+  <div id="comment-message" class="form-row">
+  <textarea name="description" placeholder = "Message" id="comment" ></textarea>
+  </div>
+  <a href="#"><input type="submit" name="dsubmit" id="commentSubmit" value="Submit Comment"></a>
+  <p1><b>Notify me when new comments are added.</b></p1>
+  </form>
+  
+  </div>
+  </div>
+  </div>
+  </div>

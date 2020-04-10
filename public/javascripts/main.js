@@ -36,6 +36,24 @@ $(document).ready(function() {
     }); 
 });
 
+//deleting comment with Ajax
+$(document).ready(function() {
+    $('.delete-event-comment').on('click', function(e) {
+       const $target = $(e.target);
+        const id = $target.attr('data-id');
+        $.ajax({
+            type: 'DELETE',
+            url: '/events/eventcomments/'+id,
+            success: function(response) {
+                window.location.href='/posts';
+            },
+            error: function(err){
+                console.log(err);
+            }
+        });
+    }); 
+});
+
 //deleting program with Ajax
 $(document).ready(function() {
     $('.delete-program').on('click', function(e) {

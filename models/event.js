@@ -37,7 +37,9 @@ const ObjectId = Schema.ObjectId;
     },
     coming_with: {
         type: Number, default: 0,
-    }
+    },
+    eventcomments: [{ type: Schema.Types.ObjectId, ref: 'Eventcomment' }]
+
  });
 
 

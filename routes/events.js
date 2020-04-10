@@ -29,8 +29,18 @@ router.get('/', async (req, res) => {
 
 
 // // Get a single comment  
-router.get("/:id/show", async (req, res) => {
-  const event = await Event.findOne({_id: req.params.id})
+// router.get("/:id/show", async (req, res) => {
+//   const event = await Event.findOne({_id: req.params.id})
+//   res.render('events/show',{
+//     "event": event
+//   });
+// })
+
+// Get a Event Wiht comments
+router.get("/:id/eventcomments", async (req, res) => {
+  const event = await Event.findOne({_id: req.params.id}).populate(
+    "eventcomments"
+  );
   res.render('events/show',{
     "event": event
   });
@@ -73,6 +83,7 @@ router.get('/pastevents', async (req, res) => {
 router.get('/new', async (req, res, next) => {
   renderNewPage(res, new Event())
 });
+
 
 // Create Events routes
 router.post('/create', upload.single('cover'), async (req, res, next) => {

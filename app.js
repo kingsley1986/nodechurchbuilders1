@@ -30,6 +30,7 @@ var commentRouter = require('./routes/comments');
 var programRouter = require('./routes/programs');
 var eventRouter = require('./routes/events');
 var usersRouter = require('./routes/users');
+var eventcommentRouter = require('./routes/event_comments');
 
 mongoose.connect(process.env.DATABASE_URL, {
   useNewUrlParser: true,
@@ -105,10 +106,15 @@ app.get('*', function(req, res, next) {
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/posts', postRouter);
+//This is for Comments
 app.use('/posts', commentRouter);
+
 app.use('/events', eventRouter);
 app.use('/programs', programRouter);
- 
+
+/// This is for eventcomments 
+app.use('/events', eventcommentRouter);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
