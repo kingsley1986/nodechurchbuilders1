@@ -1,3 +1,5 @@
 node_modules
 .env
-!public/uploads/
+!public/uploads/sendgrid.env
+sendgrid.env
+sendgrid.env
