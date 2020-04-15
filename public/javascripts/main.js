@@ -91,17 +91,17 @@ $(document).ready(function() {
 });
 
 //for program selection of programtype
-$(window).on('load', function() {
-    var select = document.getElementById("selectNumber");
-    var options = ["Youths", "Children", "YouthsHomeCell"];
-    for(var i = 0; i < options.length; i++) {
-        var opt = options[i];
-        var el = document.createElement("option");
-        el.textContent = opt;
-        select.appendChild(el);
-    }
+// $(window).on('load', function() {
+//     var select = document.getElementById("selectNumber");
+//     var options = ["Youths", "Children", "YouthsHomeCell"];
+//     for(var i = 0; i < options.length; i++) {
+//         var opt = options[i];
+//         var el = document.createElement("option");
+//         el.textContent = opt;
+//         select.appendChild(el);
+//     }
    
-});
+// });
 
 //Hiding and showing comments
 $(document).ready(function() {

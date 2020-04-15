@@ -14,7 +14,7 @@ const fs = require('fs');
 
 
 /* GET home page. */
-router.get('/', ensureAunthenticated, function(req, res, next) {
+router.get('/', function(req, res, next) {
   res.render('index', { title: 'Members' });
 });
 
