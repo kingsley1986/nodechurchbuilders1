@@ -1,5 +1,6 @@
 var express = require('express');
 const mongoose = require('mongoose');
+const Post = require('../models/post')
 
 var router = express.Router();
 
@@ -10,7 +11,15 @@ const fs = require('fs');
 
 
 
-
+router.get('/', function(req, res, next) {
+  Post.find()
+  .then(posts => {
+      res.render('index', {posts});
+  })
+  .catch(err => {
+      console.log(err);
+  })
+});
 
 
 /* GET home page. */

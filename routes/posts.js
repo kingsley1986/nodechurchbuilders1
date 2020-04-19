@@ -16,12 +16,13 @@ const upload = multer({
   }
 })
 
+
 // Get all Blog posts
 router.get('/', async (req, res) => {
   try {
     const posts =  await Post.find({})
     res.render('posts/index', {
-      posts: posts
+      posts: posts, layout: false,
     });
   } catch {
     res.redirect('/')
@@ -62,7 +63,7 @@ router.get("/:id/comments", async (req, res) => {
     "comments"
   );
   res.render('posts/show',{
-    "post": post
+    "post": post, layout: false
   });
 })
 

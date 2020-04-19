@@ -1,0 +1,15 @@
+<<% posts.forEach(post => { %>
+    <ul>
+        <li><img height="150" width="100" src="<%= post.coverImagePath %>"></li>
+        <h1><%=post.title%></h1>
+        <li><%= post.description %></li>
+        <li><%= post.from %></li>
+        <li><%= post.createdAt %></li>
+        <li><a class="show-article" href="/posts/<%=post.id%>/comments" >Show</a></li>
+        <li><a class="update-article" href="/posts/edit/<%=post.id%>" >edit</a></li>
+        <li><a class="delete-article" href="#" data-id="<%=post.id%>">Delete</a></li>
+    </ul>
+   
+<% });%>
+<%= posts.length %>
+<li><a href="/posts/new">Add New Post</a></li>>
