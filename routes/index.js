@@ -1,7 +1,8 @@
 var express = require('express');
 const mongoose = require('mongoose');
 const Post = require('../models/post')
-
+const Program = require('../models/program')
+const Event = require('../models/event')
 var router = express.Router();
 
 //for uploading image
@@ -12,14 +13,19 @@ const fs = require('fs');
 
 
 router.get('/', function(req, res, next) {
-  Post.find()
-  .then(posts => {
-      res.render('index', {posts});
-  })
-  .catch(err => {
-      console.log(err);
-  })
-});
+  Promise.all([
+    Post.find(),
+    Program.find(),
+    Event.find()
+  ]).then(([posts, programs, events]) =>
+    res.render('index', {
+      posts,
+      programs,
+      events
+    }))
+    .catch(err => console.log(err))
+})
+
 
 
 /* GET home page. */

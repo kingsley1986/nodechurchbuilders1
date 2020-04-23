@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
   try {
     const programs =  await Program.find({})
     res.render('programs/index', {
-      programs: programs
+      programs: programs, layout: false
     });
   } catch {
     res.redirect('/')
@@ -28,11 +28,12 @@ router.get('/', async (req, res) => {
 });
 
 
+
 router.get('/:id/show', async (req, res) => {
   try {
     const program =  await Program.findById(req.params.id)
     res.render('programs/show', {
-      program: program
+      program: program, layout: false
     });
   } catch {
     res.redirect('/programs')

@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
   try {
     const events =  await Event.find({})
     res.render('events/index', {
-      events: events
+      events: events, layout: false
     });
   } catch {
     res.redirect('/events')
