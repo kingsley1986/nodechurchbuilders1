@@ -4,6 +4,7 @@ const Event = require('../models/event')
 const fs = require('fs')
 const multer  = require('multer')
 const path =  require('path')
+const sharp = require('sharp');
 
 const uploadPath = path.join('public', Event.eventImageBasePath)
 const imageMineTypes = ['image/jpeg', 'image/png', 'image/gif']
@@ -86,8 +87,13 @@ router.get('/new', async (req, res, next) => {
 
 
 // Create Events routes
-router.post('/create', upload.single('cover'), async (req, res, next) => {
+router.post('/create', upload.single('eventImage'), async (req, res, next) => {
   const fileName = req.file != null ? req.file.filename : null
+  let witdth = 100;
+  let height = 100;
+
+  sharp(fileName)
+  .resize(witdth, height).toFile(req.file.path)
   const event = new Event({
     startingDate: req.body.startingDate,
     closingDate: req.body.closingDate,
@@ -95,9 +101,8 @@ router.post('/create', upload.single('cover'), async (req, res, next) => {
     description: req.body.description,
     eventImage: fileName 
   })
-  try {
-    console.log(event)
-      const events = await event.save()
+  try {    
+    const events = await event.save()
       res.redirect("/events")
     
     } catch {
@@ -134,7 +139,7 @@ router.get("/edit/:id", async (req, res) => {
   });
 });
 
-router.post('/edit/:id', upload.single('cover'), async (req, res, next) => {
+router.post('/edit/:id', upload.single('eventImage'), async (req, res, next) => {
   const fileName = req.file != null ? req.file.filename : null
   console.log(req.body)
    let event = {};
@@ -165,7 +170,7 @@ function removeeventImage(fileName) {
 async function renderNewPage(res, event, hasError = false) {
   try {
     const params = {
-      event: event
+      event: event, layout: false
     }
     if (hasError) params.errorMessage = 'Error Creating event'
     res.render('events/new', params)

@@ -331,7 +331,7 @@ section
 }
 .logo
 {
-	width: 130px;
+	width: 210px;
 	height: 41px;
 	border: solid 2px #ffffff;
 	text-align: center;
@@ -1030,19 +1030,23 @@ input[type=number]::-webkit-outer-spin-button
 }
 .blog_date
 {
-	width: 116px;
+	width: 100%;
 	height: 26px;
 	background: #ffa37b;
 	text-align: center;
+	position: relative;
+	top:40px;
 }
 .blog_date a
 {
 	display: block;
 	height: 100%;
-	font-size: 14px;
+	font-size: 20px;
 	font-weight: 600;
 	color: #ffffff;
 	line-height: 26px;
+	margin-top: 20px;
+	
 }
 .blog_title
 {
