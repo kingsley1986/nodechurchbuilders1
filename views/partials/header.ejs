@@ -278,9 +278,9 @@
 					
 				<!-- Slide -->
 				<div class="blog_slide">
-					<div class="background_image"><img  src="<%=upcomingevent.eventImagePath %>"></div>
+					<div class="background_image"><img  src="<%=upcomingevent.eventImagePath %>" style="height:135%;"></div>
 					<div class="blog_content">
-						<div class="blog_title"><a href="#">Topic: <%= upcomingevent.title%></a></div>
+						<div class="blog_title"><a href="#"><h1>Topic:</h1> <%= upcomingevent.title%></a></div>
 						<div class="blog_date"><a href="#">Starting: <%= upcomingevent.startingDate.toString().split(' ').slice(0, 5).join(' ');%></a></div>
 						<div class="blog_date"><a href="#">Ends: <%= upcomingevent.closingDate.toString().split(' ').slice(0, 5).join(' ');%></a></div>
 						
