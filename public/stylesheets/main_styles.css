@@ -31,6 +31,8 @@
 2. Body and some general stuff
 *********************************/
 
+
+
 *
 {
 	margin: 0;
@@ -331,7 +333,7 @@ section
 }
 .logo
 {
-	width: 210px;
+	width: 260px;
 	height: 41px;
 	border: solid 2px #ffffff;
 	text-align: center;
@@ -667,7 +669,10 @@ section
 	-ms-appearance: none;
 	-o-appearance: none;
 	appearance: none;
+	overflow: hidden;
+
 }
+
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button
 { 

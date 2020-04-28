@@ -16,12 +16,14 @@ router.get('/', function(req, res, next) {
   Promise.all([
     Post.find(),
     Program.find(),
-    Event.find( { startingDate: { $gt: new Date()} })
-  ]).then(([posts, programs, upcomingevents]) =>
+    Event.find( { startingDate: { $gt: new Date()} }),
+    Event.find( { startingDate: { $lt: new Date()} } && { closingDate: { $gt: new Date()} } )
+  ]).then(([posts, programs, upcomingevents, liveevents]) =>
     res.render('index', {
       posts,
       programs,
-      upcomingevents
+      upcomingevents,
+      liveevents
     }))
     .catch(err => console.log(err))
 })

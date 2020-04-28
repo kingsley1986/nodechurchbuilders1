@@ -5,7 +5,7 @@
 
 	<header class="header">
 		<div class="header_content d-flex flex-row align-items-center justify-content-start">
-			<div class="logo"><a href="#">Church Builders</a></div>
+			<div class="logo"><a href="#">CHURCH BUILDERS</a></div>
 			<div class="ml-auto d-flex flex-row align-items-center justify-content-start">
 				<nav class="main_nav">
 					<ul class="d-flex flex-row align-items-start justify-content-start">
@@ -71,12 +71,23 @@
 											<form action="#" class="booking_form">
 												<div class="d-flex flex-xl-row flex-column align-items-start justify-content-start">
 													<div class="booking_input_container d-flex flex-lg-row flex-column align-items-start justify-content-start">
-														<div><input type="text" class="datepicker booking_input booking_input_a booking_in" placeholder="Check in" required="required"></div>
-														<div><input type="text" class="datepicker booking_input booking_input_a booking_out" placeholder="Check out" required="required"></div>
-														<div><input type="number" class="booking_input booking_input_b" placeholder="Children" required="required"></div>
-														<div><input type="number" class="booking_input booking_input_b" placeholder="Room" required="required"></div>
+														<% if(liveevents[0]) { %>
+															<div class="booking_input_a booking_in"><img class="liveimage" src="<%= liveevents[0].eventImagePath %>"></div>
+															<span ><div class="booking_input booking_input_a booking_out live">THEME:   <%= liveevents[0].title.substring(0, 40); %></div>
+															<div class="booking_input booking_input_b live" >Starting:  <%= liveevents[0].startingDate.toString().split(' ').slice(0, 5).join(' '); %></div>
+															<div class="booking_input booking_input_b live">Ends: <%= liveevents[0].closingDate.toString().split(' ').slice(0, 5).join(' '); %></div>
+															<div class="booking_input booking_input_b live description"><%= liveevents[0].description.substring(0, 100); %></div></span>
+															
+														<%} else  { %>
+													
+
+															<div><input type="text" class="datepicker booking_input booking_input_a booking_in" placeholder="Check in" required="required"></div>
+															<div><input type="text" class="datepicker booking_input booking_input_a booking_out" placeholder="Check out" required="required"></div>
+															<div><input type="number" class="booking_input booking_input_b" placeholder="Children" required="required"></div>
+															<div><input type="number" class="booking_input booking_input_b" placeholder="Room" required="required"></div>
+														<% } %>
 													</div>
-													<div><button class="booking_button trans_200">Book Now</button></div>
+													
 												</div>
 											</form>
 										</div>
@@ -100,12 +111,23 @@
 											<form action="#" class="booking_form">
 												<div class="d-flex flex-xl-row flex-column align-items-start justify-content-start">
 													<div class="booking_input_container d-flex flex-lg-row flex-column align-items-start justify-content-start">
-														<div><input type="text" class="datepicker booking_input booking_input_a booking_in" placeholder="Check in" required="required"></div>
-														<div><input type="text" class="datepicker booking_input booking_input_a booking_out" placeholder="Check out" required="required"></div>
-														<div><input type="number" class="booking_input booking_input_b" placeholder="Children" required="required"></div>
-														<div><input type="number" class="booking_input booking_input_b" placeholder="Room" required="required"></div>
+														<% if(liveevents[0]) { %>
+															<div class="booking_input_a booking_in"><img class="liveimage" src="<%= liveevents[0].eventImagePath %>"></div>
+															<span >	<div class="booking_input booking_input_a booking_out live">THEME:   <%= liveevents[0].title.substring(0, 40); %></div>
+															<div class="booking_input booking_input_b live">Starting:  <%= liveevents[0].startingDate.toString().split(' ').slice(0, 5).join(' '); %></div>
+															<div class="booking_input booking_input_b live">Ends: <%= liveevents[0].closingDate.toString().split(' ').slice(0, 5).join(' '); %></div>
+															<div class="booking_input booking_input_b live description"><%= liveevents[0].description.substring(0, 100); %></div></span>
+															
+														<%} else  { %>
+													
+
+															<div><input type="text" class="datepicker booking_input booking_input_a booking_in" placeholder="Check in" required="required"></div>
+															<div><input type="text" class="datepicker booking_input booking_input_a booking_out" placeholder="Check out" required="required"></div>
+															<div><input type="number" class="booking_input booking_input_b" placeholder="Children" required="required"></div>
+															<div><input type="number" class="booking_input booking_input_b" placeholder="Room" required="required"></div>
+														<% } %>
 													</div>
-													<div><button class="booking_button trans_200">Book Now</button></div>
+													
 												</div>
 											</form>
 										</div>
@@ -129,12 +151,23 @@
 											<form action="#" class="booking_form">
 												<div class="d-flex flex-xl-row flex-column align-items-start justify-content-start">
 													<div class="booking_input_container d-flex flex-lg-row flex-column align-items-start justify-content-start">
-														<div><input type="text" class="datepicker booking_input booking_input_a booking_in" placeholder="Check in" required="required"></div>
-														<div><input type="text" class="datepicker booking_input booking_input_a booking_out" placeholder="Check out" required="required"></div>
-														<div><input type="number" class="booking_input booking_input_b" placeholder="Children" required="required"></div>
-														<div><input type="number" class="booking_input booking_input_b" placeholder="Room" required="required"></div>
+														<% if(liveevents[0]) { %>
+															<div class="booking_input_a booking_in"><img class="liveimage" src="<%= liveevents[0].eventImagePath %>"></div>
+															<span>	<div class="booking_input booking_input_a booking_out live">THEME:   <%= liveevents[0].title.substring(0, 40); %></div>
+															<div class="booking_input booking_input_b live">Starting:  <%= liveevents[0].startingDate.toString().split(' ').slice(0, 5).join(' '); %></div>
+															<div class="booking_input booking_input_b live">Ends: <%= liveevents[0].closingDate.toString().split(' ').slice(0, 5).join(' '); %></div>
+															<div class="booking_input booking_input_b live description"><%= liveevents[0].description.substring(0, 100); %></div></span>
+															
+														<%} else  { %>
+													
+
+															<div><input type="text" class="datepicker booking_input booking_input_a booking_in" placeholder="Check in" required="required"></div>
+															<div><input type="text" class="datepicker booking_input booking_input_a booking_out" placeholder="Check out" required="required"></div>
+															<div><input type="number" class="booking_input booking_input_b" placeholder="Children" required="required"></div>
+															<div><input type="number" class="booking_input booking_input_b" placeholder="Room" required="required"></div>
+														<% } %>
 													</div>
-													<div><button class="booking_button trans_200">Book Now</button></div>
+													
 												</div>
 											</form>
 										</div>

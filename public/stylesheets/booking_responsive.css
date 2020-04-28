@@ -63,7 +63,7 @@
 
 @media only screen and (max-width: 1199px)
 {
-	.container_custom .container
+	/* .container_custom .container
 	{
 		padding-left: 15px;
 		padding-right: 15px;
@@ -103,7 +103,7 @@
 		margin-left: auto;
 		margin-right: auto;
 		margin-top: 15px;
-	}
+	} */
 }
 
 /************
@@ -130,7 +130,24 @@
 
 @media only screen and (max-width: 991px)
 {
-	.container_custom .container
+	img.liveimage {
+		position: absolute;
+		  z-index: -1;
+		  top: -50px;
+	}
+	.booking_input_b.live, .live {
+		position: relative;
+		top:120px;
+		background: rgba(0, 0, 0, 0.7); 
+		font-weight: bolder;
+		left:35px;
+
+
+	}
+	.description {
+		display: none;
+	}
+	/* .container_custom .container
 	{
 		max-width: 720px;
 	}
@@ -179,7 +196,7 @@
 	.cert:not(:last-child)
 	{
 		margin-right: 15px;
-	}
+	} */
 }
 
 /************

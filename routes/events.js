@@ -43,7 +43,7 @@ router.get("/:id/eventcomments", async (req, res) => {
     "eventcomments"
   );
   res.render('events/show',{
-    "event": event
+    "event": event, layout: false
   });
 })
 
@@ -51,7 +51,7 @@ router.get('/lives', async (req, res) => {
   try {
     const lives =  await Event.find( { startingDate: { $lt: new Date()} } && { closingDate: { $gt: new Date()} } )
     res.render('events/live', {
-      lives: lives
+      lives: lives, layout: false
     });
   } catch {
     res.redirect("/events");
@@ -62,7 +62,7 @@ router.get('/upcomingevents', async (req, res) => {
   try {
     const upcomingevents =  await Event.find( { startingDate: { $gt: new Date()} })
     res.render('events/upcomings', {
-      upcomingevents: upcomingevents
+      upcomingevents: upcomingevents, layout: false
     });
   } catch {
     res.redirect("/events");
@@ -73,7 +73,7 @@ router.get('/pastevents', async (req, res) => {
   try {
     const pastevents =  await Event.find( { closingDate: { $lt: new Date()} })
     res.render('events/pastevents', {
-      pastevents: pastevents
+      pastevents: pastevents, layout: false
     });
   } catch {
     res.redirect("/events");
@@ -89,11 +89,7 @@ router.get('/new', async (req, res, next) => {
 // Create Events routes
 router.post('/create', upload.single('eventImage'), async (req, res, next) => {
   const fileName = req.file != null ? req.file.filename : null
-  let witdth = 100;
-  let height = 100;
-
-  sharp(fileName)
-  .resize(witdth, height).toFile(req.file.path)
+ 
   const event = new Event({
     startingDate: req.body.startingDate,
     closingDate: req.body.closingDate,
@@ -109,7 +105,7 @@ router.post('/create', upload.single('eventImage'), async (req, res, next) => {
       if (event.eventImage != null) {
         removeeventImage(event.eventImage)
     }
-      res.render("events/new")
+      res.redirect("back")
   }
 });
 
@@ -133,7 +129,7 @@ router.get("/edit/:id", async (req, res) => {
       return next(new Error('Could not load Document'));
     }else {
       res.render('events/edit',{
-        "event": event
+        "event": event, layout: false
       });
     }
   });
