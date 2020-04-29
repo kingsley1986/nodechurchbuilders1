@@ -25,6 +25,27 @@
 1. 1600px
 ************/
 
+@media only screen and (device-width: 768px) {
+	img.liveimage {
+		position: absolute;
+		  top: -50px;
+		  width: 454px !important;
+		  height: 450px;
+		  left: 35px;
+	}
+	.booking_input_b.live, .live {
+		position: relative;
+		top:300px;
+		background: rgba(0, 0, 0, 0.7); 
+		font-weight: bolder;
+		font-size: 26px;
+		left:35px;
+
+
+	}
+  }
+  
+
 @media only screen and (max-width: 1600px)
 {
 	
@@ -130,20 +151,8 @@
 
 @media only screen and (max-width: 991px)
 {
-	img.liveimage {
-		position: absolute;
-		  z-index: -1;
-		  top: -50px;
-	}
-	.booking_input_b.live, .live {
-		position: relative;
-		top:120px;
-		background: rgba(0, 0, 0, 0.7); 
-		font-weight: bolder;
-		left:35px;
 
 
-	}
 	.description {
 		display: none;
 	}
@@ -274,6 +283,24 @@
 
 @media only screen and (max-width: 575px)
 {
+
+	.booking_input_b.live, .live {
+		position: relative;
+		top:120px;
+		background: rgba(0, 0, 0, 0.7); 
+		font-weight: bolder;
+		left:35px;
+
+
+	}
+	img.liveimage {
+		position: absolute;
+		  top: -50px;
+		  width: 260px !important;
+		  height: 220px;
+		  left: 35px;
+	}
+	
 	.container_custom .container
 	{
 		max-width: 100%;
