@@ -117,6 +117,7 @@ $(document).ready(function()
 				autoplay:true,
 				loop:true,
 				nav:false,
+				autoplayHoverPause:true,
 				smartSpeed:1200
 			});
 
