@@ -199,7 +199,7 @@ Event.findByIdAndUpdate({_id: req.params.id}, {$inc: { coming_with: req.body.com
     });
   } else {
     res.render("events/show", {
-      event: event,
+      event: event, layout: false
     });
   }
 });

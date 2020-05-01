@@ -68,7 +68,7 @@ router.post('/create', upload.single('cover'), async (req, res, next) => {
   }
 });
 
-router.get("/:id/:edit", async (req, res) => {
+router.get("/:id/:edit", async (req, res, next) => {
   Program.findById(req.params.id, function(err, program) {
     if (!program) {
       return next(new Error('Could not load Document'));
@@ -124,7 +124,7 @@ function removeprogramImage(fileName) {
 async function renderNewPage(res, program, hasError = false) {
   try {
     const params = {
-      program: program
+      program: program, layout: false
     }
     if (hasError) params.errorMessage = 'Error Creating program'
     res.render('programs/new', params)
