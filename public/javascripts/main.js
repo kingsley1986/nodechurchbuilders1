@@ -151,7 +151,7 @@ $(function () {
 
 
 $(document).ready(function() {
-    $('#goingevent').on('click', function(e) {
+    $('.click-me').on('click', function(e) {
        const $target = $(e.target);
         const id = $target.attr('data-id');
         $.ajax({
@@ -195,7 +195,10 @@ let menu = document.querySelector("#thankyou");
 let menu2 = document.querySelector("#coming_with");
 let menu3 = document.querySelector("#chooseNumber");
 let menu4 = document.querySelector("#send_coming_with");
-let menu5 = document.querySelector("#goingevent");
+let menu5 = document.querySelector(".click-me");
+let menu6 = document.querySelector("#yes");
+let menu7 = document.querySelector("#no");
+let clickMe = document.querySelector(".click-me");
 
 menu.style.display = "none";
 menu2.style.display = "none";
@@ -203,8 +206,10 @@ menu3.style.display = "none";
 menu4.style.display = "none";
 
 $(document).ready(function() {
-    $('#goingevent').on('click', function() {
+    $('.click-me').on('click', function() {
         menu.style.display = "block";
+        menu6.style.display = "block";
+        menu7.style.display = "block";
         menu5.style.display = "none";
     }) 
 });
@@ -215,7 +220,9 @@ $(document).ready(function() {
             menu.style.display = "none";
             menu2.style.display = "block";
             menu3.style.display = "block"
-            menu4.style.display = "block"
+            menu4.style.display = "block";
+            menu6.style.display = "none";
+            menu7.style.display = "none";
 
             var myArray = new Array("1", "2", "3", "4", "5");
             // Get dropdown element from DOM
@@ -236,14 +243,16 @@ $(document).ready(function() {
 $(document).ready(function() {
     $('#no').on('click', function() {
         if(document.getElementById("no").innerHTML === "No") {
-            location.reload();
 
             menu.style.display = "none";
             menu2.style.display = "none";
-            menu3.style.display = "none"
-            menu4.style.display = "none"
+            menu3.style.display = "none";
+            menu4.style.display = "none";
+            menu7.style.display = "none";
+            // clickMe.style.display = "none"
+            location.reload();
+
         }
     }) 
 });
-
 

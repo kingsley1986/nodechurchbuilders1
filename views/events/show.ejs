@@ -6,7 +6,10 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap-4.1.2/bootstrap.min.css">
-		<link href="/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <link href="/plugins/font-awesome-4.7.0/css/font-awesome.css" rel="stylesheet" type="text/css">
+    
 		<link rel="stylesheet" type="text/css" href="/plugins/OwlCarousel2-2.3.4/owl.carousel.css">
 		<link rel="stylesheet" type="text/css" href="/plugins/OwlCarousel2-2.3.4/owl.theme.default.css">
 		<link rel="stylesheet" type="text/css" href="/plugins/OwlCarousel2-2.3.4/animate.css">
@@ -47,72 +50,110 @@
             </div>
         </header>
 
-
+  <div class="container" style=" width:50%; word-wrap: break-word;">
+     <div class="row">
+      <div class="text-center" style="padding-top: 90px;">
+        <div><img height="300" width="300" src="<%= event.eventImagePath %>"></div>
+        <h1><%= event.title %></h1>
+        <p class="event_comment_description text-center" ><%= event.description %></p>
+        <h4><%= event.startingDate %></h4>
+        <h4><%= event.closingDate %></h4>
+      </div>
+    </div>
+  </div>
+  <div class="container" style=" width:55%; word-wrap: break-word;">
 <div class="text-center">
-  <li><img height="400" width="400" src="<%= event.eventImagePath %>"></li>
-  <h1><%= event.title %></h1>
-  <p><%= event.description %></p>
-  <h4><%= event.startingDate %></h4>
-  <h4><%= event.closingDate %></h4>
-  <% const counter = event.going + event.coming_with >= 2 ? "People going" : "Person going"; %>
-  <button id="show-attendance"><%= event.going + event.coming_with + " " + counter + "" %></button>
-  <a id="goingevent" href="#" data-id="<%=event.id%>">Yes</a>
-  
-<p id="thankyou">Thank you, Are you coming with someone? <span id="yes" style="color:blue">Yes</span> <span id="no">No</span></p>
-<div id="coming_with"> choose how many people you want to come with</div>
+<table class="table table-striped table-dark">
+	<thead>
+	  <tr>
+		<th scope="col">Comments</th>
+		<th scope="col">Attendants</th>
+		<th scope="col">Are you coming? Click Yes</th>
+	  </tr>
+	</thead>
+	<tbody>
+	  <tr>
+		<td><% const counter2 = event.eventcomments.length >= 2 ? "Comments" : "Comment"; %>
+			<button class="show-comments btn btn-secondary" ><%= event.eventcomments.length + " " + counter2 + "" %></button>
+		  <% %>
+		</td>
+		<td class="btn btn-outline-dark" style="font-weight: bold"><% const counter = event.going + event.coming_with >= 2 ? "People going" : "Person going"; %>
+			<button id="show-attendance " ><%= event.going + event.coming_with + " " + counter + "" %></button>
+		</td>
+		<td>
+			<label for="click" class="click-me btn btn-success" href="#" data-id="<%=event.id%>">I'm Going</label>
+		</td>
+	</tr>
+</tbody>
+</table> 
+<div class="center">
+	<input type="checkbox" id="click">
+			<div class="content">
+				<div class="popupheader">
+					<h2>HALLELUYAH! GOD BLESS YOU</h2>
+					<label for="click" class="fa fa-times"></label>
+				</div>
+				<h3 id="thankyou">Are you coming with someone? </h3> 
+				<div class="columnContainer">
+					<button type="button" id="yes" class="btn btn-success col-md-5">Yes</button>
+					<button type="button" id="no" class="btn btn-info col-md-5 col-md-offset-1">No</button>
+				</div>
+				<div id="coming_with"> choose how many people you want to come with</div>
+				<form action="/events/<%=event.id%>/coming_with" method="POST" id="my_with">
+					<select name="coming_with" id="chooseNumber">
+					  <option>Choose a number</option>
+					</select>
+					<button id="send_coming_with" type="submit">send</button>
+				</form >
+				<div class="line"></div>
+				<label for="click" class="close-btn">Close</label>
+				</div>
+			</div>
 
-<form action="/events/<%=event.id%>/coming_with" method="POST" id="my_with">
-  <select name="coming_with" id="chooseNumber">
-    <option>Choose a number</option>
-  </select>
-  <button id="send_coming_with" type="submit">send</button>
-</form >
+</div>
+</div>
+    
+
+   
+
+    <div class="postcomments text-center" ><% event.eventcomments.forEach(item => { %>
+      <ul >
+        <li><%= item.description %></li>
+        <a class="delete-event-comment" href="#" data-id="<%=event.id%>/<%=item._id%>">Delete</a>
+      </ul>
+    <% });%>
+    </div>
 </div>
 
-<% const counter2 = event.eventcomments.length >= 2 ? "Comments" : "Comment"; %>
-<button class="show-comments"><%= event.eventcomments.length + " " + counter2 + "" %></button>
-<% %>
-<div class="postcomments" ><% event.eventcomments.forEach(item => { %>
-  <ul >
-    <li><%= item.description %></li>
-    <a class="delete-event-comment" href="#" data-id="<%=event.id%>/<%=item._id%>">Delete</a>
 
-  </ul>
-<% });%>
-</div>
 
 
 <!------------container------->
+</br>
+</br>
 
-<div class="container">
-
-  <!-------Wrap------------>
   <div id="wrap">
-  
-  <p>Your email address will not be published. Required fields are marked *</p>
-  
-  <!------------Form Start---------->
-  
+  <p>Your email address will not be published. Required fields are marked *</p>  
   <div id='form'>
-  <div class="row">
-  <div class="col-md-12">
-  
-    <form action="/events/<%=event._id%>/eventcomment" method="post" id="commentform">
-  
-  <div id="comment-name" class="form-row">
-  <input type = "text" placeholder = "Name (required)" name="name"  id="name" >
+    <div class="row">
+      <div class="col-md-12">
+        <form action="/events/<%=event._id%>/eventcomment" method="post" id="commentform">
+          <div id="comment-name" class="form-row">
+            <input type = "text" placeholder = "Name (required)" name="name"  id="name" >
+          </div>
+          <div id="comment-message" class="form-row">
+            <textarea name="description" placeholder = "Message" id="comment" ></textarea>
+          </div>
+          <a href="#"><input type="submit" name="dsubmit" id="commentSubmit" value="Submit Comment"></a>
+          <p1><b>Notify me when new comments are added.</b></p1>
+        </form>
+      </div>
+    </div>
   </div>
-  <div id="comment-message" class="form-row">
-  <textarea name="description" placeholder = "Message" id="comment" ></textarea>
-  </div>
-  <a href="#"><input type="submit" name="dsubmit" id="commentSubmit" value="Submit Comment"></a>
-  <p1><b>Notify me when new comments are added.</b></p1>
-  </form>
-  
-  </div>
-  </div>
-  </div>
-  </div>
+
+
+
+
 
 
   <script src="/javascripts/jquery-3.3.1.min.js"></script>
@@ -144,5 +185,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">  
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
 <script src="/javascripts/custom.js"></script>
+
 </body>
 </html>
