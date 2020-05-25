@@ -33,7 +33,7 @@ var usersRouter = require('./routes/users');
 var eventcommentRouter = require('./routes/event_comments');
 var contactformRouter = require('./routes/contact_forms');
 
-mongoose.connect(process.env.DATABASE_URL, {
+mongoose.connect(process.env.MONGODB_URI ||  process.env.DATABASE_URL,   {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
