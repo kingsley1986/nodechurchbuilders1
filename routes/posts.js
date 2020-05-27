@@ -4,16 +4,20 @@ const Post = require('../models/post')
 const fs = require('fs')
 const multer  = require('multer')
 const path =  require('path')
+const sharp = require('sharp');
+
 
 
 const uploadPath = path.join('public', Post.postImageBasePath)
 const imageMineTypes = ['image/jpeg', 'image/png', 'image/gif']
 
 const upload = multer({ 
+  
   dest: uploadPath,
   fileFilter:  (req, file, callback) => {
     callback(null, imageMineTypes.includes(file.mimetype) )
   }
+  
 })
 
 
@@ -38,6 +42,11 @@ router.get('/new', async (req, res, next) => {
 router.post('/', upload.single('cover'), async (req, res, next) => {
  const fileName = req.file != null ? req.file.filename : null
 
+ sharp(req.file.path)
+  .resize(400, 400)
+  .toFile('public/uploads/postImages/' + req.file.filename, function(err) {
+  });
+
   const post = new Post({
     title: req.body.title,
     description: req.body.description,
@@ -46,6 +55,7 @@ router.post('/', upload.single('cover'), async (req, res, next) => {
 
   })
   try {
+  
     const newPost = await post.save()
     res.redirect('/posts')
 
@@ -73,7 +83,7 @@ router.get("/edit/:id", async (req, res) => {
       return next(new Error('Could not load Document'));
     }else {
       res.render('posts/edit',{
-        "post": post
+        "post": post, layout: false
       });
     }
   });
@@ -128,7 +138,7 @@ function removePostImage(fileName) {
 async function renderNewPage(res, post, hasError = false) {
   try {
     const params = {
-      post: post
+      post: post, layout: false
     }
     if (hasError) params.errorMessage = 'Error Creating Post'
     res.render('posts/new', params)

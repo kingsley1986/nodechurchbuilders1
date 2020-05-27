@@ -1,4 +1,5 @@
-<h2> New Post</h2>
+<%- include('../partials/header.ejs') %> 
+<h2 class="new-post-form" style="padding-top: 130px;"> New Post</h2>
 <form action="/posts" method="POST" enctype="multipart/form-data">
     <%- include('_form_fields') %>
     <a href="/posts">Cacel</a>
