@@ -178,7 +178,6 @@ async function renderNewPage(res, event, hasError = false) {
 
 router.get("/:id/going", async (req, res, next) => {
   Event.findById(req.params.id, function(err, event) {
-    console.log("kdjkfdjkfdkj")
     if (!event) {
       return next(new Error('Could not load Document'));
     }else {
@@ -198,9 +197,8 @@ Event.findByIdAndUpdate({_id: req.params.id}, {$inc: { coming_with: req.body.com
       event: event,
     });
   } else {
-    res.render("events/show", {
-      event: event, layout: false
-    });
+    console.log(event._id)
+    return res.redirect('/events/' + event._id + "/eventcomments");
   }
 });
 });
