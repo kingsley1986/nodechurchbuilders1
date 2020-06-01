@@ -18,7 +18,9 @@
                             <h2 class="post-d">
                                 <%= post.createdAt.toString().split(' ').slice(0, 4).join(' ');%>
                             </h2>
-                            
+                            <h2 class="post-descr">
+                                <%= post.description.subString(0, 100); %>
+                            </h2>
                         </figcaption>
                     </figure>
                 </a>
