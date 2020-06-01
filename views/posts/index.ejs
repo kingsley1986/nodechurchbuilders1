@@ -19,11 +19,8 @@
                                 <%= post.createdAt.toString().split(' ').slice(0, 4).join(' ');%>
                             </h2>
                             <h2 class="post-descr">
-                                <% if (post.description.length >= 100) { %>
-                                    <%= post.description.substring(0, 100); %>
-                                <% } else { %>
-                                    <%= post.description %>  
-                                <% } %>
+                                <%= post.description %>
+                                <!-- <%= post.description.substring(0, 100); %> -->
                             </h2>
                         </figcaption>
                     </figure>
