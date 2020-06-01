@@ -19,7 +19,7 @@
                                 <%= post.createdAt.toString().split(' ').slice(0, 4).join(' ');%>
                             </h2>
                             <h2 class="post-descr">
-                                <%= post.description.toString().substring(0, 100); %>
+                                <%= post.description.slice(0, 100); %>
                             </h2>
                         </figcaption>
                     </figure>
