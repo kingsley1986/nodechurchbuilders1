@@ -1,9 +1,10 @@
+<%- include('../partials/header.ejs') %> 
 <main class="text-center  "> 
     <div class="row">
         <article class=" ">
             <h3><%= post.title %></h3>
             <img class="post-show-image" src="<%= post.coverImagePath %>">
-            
+            <h4><%= moment(post.createdAt).fromNow(); %></h4>
             <h4><%= post.from %></h4>
             <p class="col-md-6 offset-md-3" ><%= post.description %></p>
         </article>
@@ -35,7 +36,7 @@
                     <div class="comment user-comment">
                         <div class="info">
                             <a href="#"><%= item.name %></a>
-                           
+                            <span><%= moment(item.createdAt).fromNow(); %></span>
                         </div>
                         <a class="avatar" href="#">
                             <img src="http://i63.tinypic.com/2r3ec1t.png" width="35" alt="Profile Avatar" title="Amanda Quick" />
