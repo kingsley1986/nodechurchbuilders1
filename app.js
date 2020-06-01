@@ -40,7 +40,7 @@ mongoose.connect(process.env.MONGODB_URI ||  process.env.DATABASE_URL,   {
 const db = mongoose.connection
 db.on('error', error => console.log(error)) 
 db.once('open', () => console.log('connectd to Mongoose'))
-
+global.moment = require("moment");
 
 var app = express();
 app.use(require('connect-flash')());
