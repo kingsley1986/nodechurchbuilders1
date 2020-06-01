@@ -15,10 +15,10 @@
                             <p class="post-from">
                                 <%= post.from%>
                             </p>
-                            
-                            <h2 class="post-descr">
-                                <%= post.description.substring(0, 100); %>
+                            <h2 class="post-d">
+                                <%= post.createdAt.toString().split(' ').slice(0, 4).join(' ');%>
                             </h2>
+                            
                         </figcaption>
                     </figure>
                 </a>
