@@ -6,7 +6,7 @@
             <% programs.forEach(program => { %>
             <div class="col-lg-5 align-self-center">
                 <div class="welcome-img">
-                    <a href="/programs/<%=program.id%>/show"><img  style="position:absolute; 
+                    <a href="/programs/<%=program.id%>/programcomments"><img  style="position:absolute; 
                     top:0; 
                     bottom:0; 
                     margin: auto;
@@ -18,7 +18,7 @@
                 <div class="welcome-text mt-5 mt-lg-0">
                     <h2><%=program.title %></h2>
                     <p class="pt-3"><%= program.description %></p>
-                    <a href="/programs/<%=program.id%>/show" class="template-btn mt-3">learn more</a>
+                    <a href="/programs/<%=program.id%>/programcomments" class="template-btn mt-3">learn more</a>
                 </div>
             </div>
             <% });%>

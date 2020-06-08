@@ -32,6 +32,7 @@ var eventRouter = require('./routes/events');
 var usersRouter = require('./routes/users');
 var eventcommentRouter = require('./routes/event_comments');
 var contactformRouter = require('./routes/contact_forms');
+var programCommentRouter = require('./routes/program_comments');
 
 mongoose.connect(process.env.MONGODB_URI ||  process.env.DATABASE_URL,   {
   useNewUrlParser: true,
@@ -119,6 +120,9 @@ app.use('/programs', programRouter);
 app.use('/events', eventcommentRouter);
 //for contact form
 app.use('/contact_form', contactformRouter);
+
+app.use('/programs', programCommentRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

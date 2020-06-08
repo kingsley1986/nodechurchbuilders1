@@ -29,15 +29,14 @@ router.get('/', async (req, res) => {
 
 
 
-router.get('/:id/show', async (req, res) => {
-  try {
-    const program =  await Program.findById(req.params.id)
-    res.render('programs/show', {
-      program: program, layout: false
-    });
-  } catch {
-    res.redirect('/programs')
-  }
+router.get('/:id/programcomments', async (req, res) => {
+  const program = await Program.findOne({_id: req.params.id}).populate(
+    "programcomments"
+  );
+  res.render('programs/show',{
+    "program": program, layout: false
+  });
+  console.log(program.programcomments.length)
 });
 
 // New Program routes

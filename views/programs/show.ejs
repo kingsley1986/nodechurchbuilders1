@@ -24,4 +24,40 @@
         </div>
     </div>
 </section>
+
+
+<body>
+    <div class="write-new">
+
+        <form action="/programs/<%=program._id%>/programcomment" method="post" id="commentform">
+            <div id="comment-name" >
+                <input type = "text" placeholder = "Name (required)" name="name"  id="name" >
+            </div>
+                    <textarea placeholder="Write your comment here" name="description" ></textarea>
+            <div class="text-center">       
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+
+
+    <section class="comment-section">
+        <% const counter = program.programcomments.length >= 2 ? "Comments" : "Comment"; %>
+            <div class="show-comments">  
+                <button class="show-comments" ><%= program.programcomments.length + " " + counter + "" %></button>
+            </div> 
+        <% %>
+        <div class="pments" ><% program.programcomments.forEach(item => { %>
+            <div class="comment user-comment">
+                <div class="info">
+                    <a href="#"><%= item.name %></a>
+                    <span><%= moment(item.createdAt).fromNow(); %></span>
+                </div>
+                <a class="avatar" href="#">
+                    <img src="http://i63.tinypic.com/2r3ec1t.png" width="35" alt="Profile Avatar" title="Amanda Quick" />
+                </a>
+                <p><%= item.description %></p>
+            </div>
+        <% });%> 
+    </section>   
 	
