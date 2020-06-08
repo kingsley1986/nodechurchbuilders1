@@ -1,9 +1,27 @@
 <%- include('../partials/header.ejs') %> 
-<body>
-    <div class="text-center">
-        <li><img height="400" width="400" src="<%= program.programImagePath %>"></li>
-        <h1><%= program.title %></h1>
-    <p><%= program.description %></p>
-</body>
-   
+
+<section class="welcome-area section-padding3">
+    <div class="container" style="padding-top: 150px;">
+        <div class="row" >
+            <div class="col-lg-6 align-self-center" style=" 
+                                                        display: block;
+                                                        margin-left: auto;
+                                                        margin-right: auto;">
+                <div class="welcome-img-show" >
+                    <img  src="<%= program.programImagePath %>"  alt="">
+                </div></a>
+            </div>
+            <div class="col-lg-7" style=" 
+                                    display: block;
+                                    margin-left: auto;
+                                    margin-right: auto; 
+                                    text-align: center;" > 
+                <div class="welcome-text mt-5 mt-lg-0" >
+                    <h2><%=program.title %></h2>
+                    <p class="pt-3"><%= program.description %></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 	
