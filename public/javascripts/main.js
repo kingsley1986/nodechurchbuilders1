@@ -36,16 +36,38 @@ $(document).ready(function() {
     }); 
 });
 
-//deleting comment with Ajax
+//deleting event comment with Ajax
 $(document).ready(function() {
     $('.delete-event-comment').on('click', function(e) {
        const $target = $(e.target);
         const id = $target.attr('data-id');
+        const splitted_id = id.slice(0, id.indexOf('/'));
+
         $.ajax({
             type: 'DELETE',
-            url: '/events/eventcomments/'+id,
+            url: '/events/'+id,
             success: function(response) {
-                window.location.href='/posts';
+                window.location.href='/events/' + splitted_id + '/eventcomments';
+            },
+            error: function(err){
+                console.log(err);
+            }
+        });
+    }); 
+});
+
+
+//deleting program comment with Ajax
+$(document).ready(function() {
+    $('.delete-program-comment').on('click', function(e) {
+       const $target = $(e.target);
+        const id = $target.attr('data-id');
+        const splitted_id = id.slice(0, id.indexOf('/'));
+        $.ajax({
+            type: 'DELETE',
+            url: '/programs/'+id,
+            success: function(response) {
+                window.location.href='/programs/' + splitted_id + '/programcomments';
             },
             error: function(err){
                 console.log(err);
@@ -89,6 +111,8 @@ $(document).ready(function() {
         });
     }); 
 });
+
+
 
 // for program selection of programtype
 $(window).on('load', function() {

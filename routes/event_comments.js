@@ -26,7 +26,8 @@ router.post("/:eventId/eventcomment", async(req, res) => {
   });
   
 
-  router.delete("/eventcomments/:eventId/:eventcommenttId", async function (req, res) {
+  router.delete("/:eventId/:eventcommentId", async function (req, res) {
+    console.log("i have been hitted")
     try {
       const event = await Event.findByIdAndUpdate(
         req.params.eventId,

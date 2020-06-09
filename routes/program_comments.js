@@ -27,28 +27,29 @@ router.post("/:programId/programcomment", async(req, res) => {
 
   
 
-  // router.delete("/comments/:postId/:commentId", async function (req, res) {
-  //   try {
-  //     const post = await Post.findByIdAndUpdate(
-  //       req.params.postId,
-  //       {
-  //         $pull: { comments: req.params.commentId },
-  //       },
-  //       { new: true }
-  //     );
+  router.delete("/:programId/:programcommentId", async function (req, res) {
+    console.log("i have been hitted")
+    try {
+      const program = await Program.findByIdAndUpdate(
+        req.params.programId,
+        {
+          $pull: { programcomments: req.params.programcommentId },
+        },
+        { new: true }
+      );
   
-  //     if (!post) {
-  //       return res.status(400).send("Post not found");
-  //     }
+      if (!program) {
+        return res.status(400).send("Post not found");
+      }
   
-  //     await Comment.findByIdAndDelete(req.params.commentId);
+      await Programcomment.findByIdAndDelete(req.params.programcommentId);
   
-  //     res.send("Success");
-  //   } catch (err) {
-  //     console.log(err);
-  //     res.status(500).send("Something went wrong");
-  //   }
-  // });
+      res.send("Success");
+    } catch (err) {
+      console.log(err);
+      res.status(500).send("Something went wrong");
+    }
+  });
 
 
   

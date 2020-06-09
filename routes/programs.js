@@ -36,7 +36,6 @@ router.get('/:id/programcomments', async (req, res) => {
   res.render('programs/show',{
     "program": program, layout: false
   });
-  console.log(program.programcomments.length)
 });
 
 // New Program routes
