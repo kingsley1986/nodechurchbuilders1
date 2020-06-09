@@ -156,21 +156,7 @@ $(document).ready(function() {
 
 
 
-$(function () {                
-    $('#datetimepicker1').datetimepicker();
-    
-    $('#datetimepicker2').datetimepicker({
-      useCurrent: false //Important! See issue #1075
-    });
-    
-    $("#datetimepicker1").on("dp.change", function (e) {
-      $('#datetimepicker2').data("DateTimePicker").minDate(e.date);
-    });      
-    
-    $("#datetimepicker2").on("dp.change", function (e) {
-        $('#datetimepicker1').data("DateTimePicker").maxDate(e.date);
-    });
-});
+
 
 
 
@@ -214,21 +200,8 @@ $(document).ready(function() {
 
 
 
+
 //for event attendance
-let menu = document.querySelector("#thankyou");
-let menu2 = document.querySelector("#coming_with");
-let menu3 = document.querySelector("#chooseNumber");
-let menu4 = document.querySelector("#send_coming_with");
-let menu5 = document.querySelector(".click-me");
-let menu6 = document.querySelector("#yes");
-let menu7 = document.querySelector("#no");
-let clickMe = document.querySelector(".click-me");
-
-menu.style.display = "none";
-menu2.style.display = "none";
-menu3.style.display = "none";
-menu4.style.display = "none";
-
 $(document).ready(function() {
     $('.click-me').on('click', function() {
         menu.style.display = "block";
@@ -280,3 +253,34 @@ $(document).ready(function() {
     }) 
 });
 
+
+$(function () {                
+    $('#datetimepicker1').datetimepicker();
+    
+    $('#datetimepicker2').datetimepicker({
+      useCurrent: false //Important! See issue #1075
+    });
+    
+    $("#datetimepicker1").on("dp.change", function (e) {
+      $('#datetimepicker2').data("DateTimePicker").minDate(e.date);
+    });      
+    
+    $("#datetimepicker2").on("dp.change", function (e) {
+        $('#datetimepicker1').data("DateTimePicker").maxDate(e.date);
+    });
+});
+
+//for event attendance
+let menu = document.querySelector("#thankyou");
+let menu2 = document.querySelector("#coming_with");
+let menu3 = document.querySelector("#chooseNumber");
+let menu4 = document.querySelector("#send_coming_with");
+let menu5 = document.querySelector(".click-me");
+let menu6 = document.querySelector("#yes");
+let menu7 = document.querySelector("#no");
+let clickMe = document.querySelector(".click-me");
+
+menu.style.display = "none";
+menu2.style.display = "none";
+menu3.style.display = "none";
+menu4.style.display = "none";

@@ -177,6 +177,7 @@ async function renderNewPage(res, event, hasError = false) {
 
 
 router.get("/:id/going", async (req, res, next) => {
+  console.log("i am going")
   Event.findById(req.params.id, function(err, event) {
     if (!event) {
       return next(new Error('Could not load Document'));
