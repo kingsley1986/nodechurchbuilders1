@@ -24,7 +24,6 @@
     "javascript-time-ago": "^2.0.7",
     "jquery": "^3.5.1",
     "jsdom": "^16.2.1",
-    "body-parser": "*",
     "method-override": "^3.0.0",
     "moment": "^2.24.0",
     "mongoose": "^5.9.3",
