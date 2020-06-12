@@ -850,8 +850,8 @@ input[type=number]::-webkit-outer-spin-button
 .test_slider_item
 {
 	background: #ffffff;
-	padding-top: 43px;
-	padding-bottom: 58px;
+	/* padding-top: 0.5px; */
+	/* padding-bottom: 58px; */
 	padding-left: 45px;
 	padding-right: 45px;
 }
@@ -886,9 +886,25 @@ input[type=number]::-webkit-outer-spin-button
 {
 	margin-top: 21px;
 }
+
+h1.testimonial_title
+{
+	font-size: 22px;
+	font-weight: 600;
+	color: #393939;
+	line-height: 1.2;
+	text-decoration: none;
+
+	text-shadow: rgba(51, 170, 51, .7)    /*  70% opaque green */ 
+
+	
+}
+
+
+
 .testimonial_title a
 {
-	font-size: 24px;
+	font-size: 1px;
 	font-weight: 600;
 	color: #393939;
 	line-height: 1.2;
@@ -900,11 +916,12 @@ input[type=number]::-webkit-outer-spin-button
 .testimonial_text
 {
 	margin-top: 24px;
+	font-size: 17px;
 }
 .testimonial_image
 {
-	width: 106px;
-	height: 106px;
+	width: 220px;
+	height: 220px;
 	border-radius: 50%;
 	overflow: hidden;
 	margin-left: auto;
@@ -922,7 +939,7 @@ input[type=number]::-webkit-outer-spin-button
 {
 	font-size: 15px;
 	font-weight: 600;
-	color: #393939;
+	color: red;
 }
 .testimonial_author a:hover
 {
