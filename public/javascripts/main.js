@@ -76,6 +76,11 @@ $(document).ready(function() {
     }); 
 });
 
+
+
+
+
+
 //deleting program with Ajax
 $(document).ready(function() {
     $('.delete-program').on('click', function(e) {
@@ -199,7 +204,18 @@ $(document).ready(function() {
 // });
 
 
+$(document).ready(function() {
+    // Configure/customize these variables.
+    var showChar = 120;  // How many characters are shown by default
 
+    $('.post-descrition').each(function() {
+        var content = $(this).html();
+        if(content.length > showChar) {
+            var c = content.substr(0, showChar);
+            $(this).html(c);
+        }
+    });
+});
 
 //for event attendance
 $(document).ready(function() {
@@ -270,6 +286,8 @@ $(function () {
     });
 });
 
+
+
 //for event attendance
 let menu = document.querySelector("#thankyou");
 let menu2 = document.querySelector("#coming_with");
@@ -284,3 +302,5 @@ menu.style.display = "none";
 menu2.style.display = "none";
 menu3.style.display = "none";
 menu4.style.display = "none";
+
+
