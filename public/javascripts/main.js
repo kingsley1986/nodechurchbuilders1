@@ -203,6 +203,18 @@ $(document).ready(function() {
 //     }); 
 // });
 
+$(document).ready(function() {
+    // Configure/customize these variables.
+    var showChar = 120;  // How many characters are shown by default
+
+    $('.post-descr').each(function() {
+        var content = $(this).html();
+        if(content.length > showChar) {
+            var c = content.substr(0, showChar);
+            $(this).html(c);
+        }
+    });
+});
 
 $(document).ready(function() {
     // Configure/customize these variables.
