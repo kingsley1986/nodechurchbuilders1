@@ -6,32 +6,17 @@ const multer  = require('multer')
 const path =  require('path')
 const sharp = require('sharp');
 
-var AWS = require('aws-sdk');
-var multerS3 = require('multer-s3')
-
-AWS.config.update({
-  secretAccessKey: process.env.S3_SECRECT,
-  accessKeyId: process.env.AWS_ACCESS_KEY,
-  region: process.env.S3_REGION,
-});
-
-
-s3 = new AWS.S3();
-
 
 
 const uploadPath = path.join('public', Post.postImageBasePath)
 const imageMineTypes = ['image/jpeg', 'image/png', 'image/gif']
 
 const upload = multer({ 
-  storage: multerS3({
-    s3: s3,
-    bucket: "nodechurchbuilders",
-    dest: uploadPath,
-      fileFilter:  (req, file, callback) => {
-      callback(null, imageMineTypes.includes(file.mimetype) )
-    }
-  })
+  
+  dest: uploadPath,
+  fileFilter:  (req, file, callback) => {
+    callback(null, imageMineTypes.includes(file.mimetype) )
+  }
   
 })
 
@@ -57,10 +42,10 @@ router.get('/new', async (req, res, next) => {
 router.post('/', upload.single('cover'), async (req, res, next) => {
  const fileName = req.file != null ? req.file.filename : null
 
-//  sharp(req.file.path)
-//   .resize(400, 400)
-//   .toFile('public/uploads/postImages/' + req.file.filename, function(err) {
-//   });
+ sharp(req.file.path)
+  .resize(400, 400)
+  .toFile('public/uploads/postImages/' + req.file.filename, function(err) {
+  });
 
   const post = new Post({
     title: req.body.title,
