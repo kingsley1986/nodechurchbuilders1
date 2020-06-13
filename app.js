@@ -21,6 +21,9 @@ var upload = multer({dest: './uploads'});
 var flash = require('connect-flash');
 var bcrypt = require('bcryptjs');
 global.mongoose = require('mongoose');
+var AWS = require('aws-sdk');
+var multerS3 = require('multer-s3')
+
 
 
 
