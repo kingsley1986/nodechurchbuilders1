@@ -12,7 +12,7 @@ var multerS3 = require('multer-s3')
 AWS.config.update({
   secretAccessKey: process.env.S3_SECRECT,
   accessKeyId: process.env.AWS_ACCESS_KEY,
-  region: process.env.S3_BUCKET
+  region: process.env.S3-REGION
 });
 
 s3 = new AWS.S3();
@@ -20,12 +20,15 @@ s3 = new AWS.S3();
 
 const uploadPath = path.join('public', Post.postImageBasePath)
 const imageMineTypes = ['image/jpeg', 'image/png', 'image/gif']
+const bucketname = 'churchbucket';
 
 const upload = multer({ 
 
   storage: multerS3({
     s3: s3,
-    bucket: 'churchbucket',
+    bucket: bucketname,
+    s3BucketEndpoint:true,
+    endpoint:"http://" + bucketname + ".s3.amazonaws.com",
     key: function (req, file, cb) {
         cb(null, uploadPath + '/' + file.originalname); //use Date.now() for unique file keys
     }
