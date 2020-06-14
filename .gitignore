@@ -1,5 +1,5 @@
 node_modules
-.env
 !public/uploads/sendgrid.env
 sendgrid.env
 sendgrid.env
+.env
