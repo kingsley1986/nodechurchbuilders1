@@ -32,7 +32,7 @@ const upload = multer({
     s3BucketEndpoint:true,
     endpoint:"http://" + bucketname + ".s3.amazonaws.com",
     key: function (req, file, cb) {
-        cb(null, uploadPath + '/' + file.originalname); //use Date.now() for unique file keys
+        cb(null, 'public/uploads/postImages/' + file.originalname);
     }
   })
   
@@ -67,7 +67,7 @@ router.post('/', upload.single('cover'), async (req, res, next) => {
     title: req.body.title,
     description: req.body.description,
     from: req.body.from,
-    postImage: fileName
+    postImage: fileName,
 
   })
   try {

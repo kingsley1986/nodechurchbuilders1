@@ -18,6 +18,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var multer = require('multer');
 // handle file uploads
 var upload = multer({dest: './uploads'});
+
 var flash = require('connect-flash');
 var bcrypt = require('bcryptjs');
 global.mongoose = require('mongoose');
