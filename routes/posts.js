@@ -24,6 +24,7 @@ const imageMineTypes = ['image/jpeg', 'image/png', 'image/gif']
 const bucketname = 'churchbucket';
 
 const upload = multer({ 
+  
 
   storage: multerS3({
     s3: s3,
@@ -33,7 +34,8 @@ const upload = multer({
     key: function (req, file, cb) {
         cb(null, uploadPath + '/' + file.originalname); //use Date.now() for unique file keys
     }
-})
+  })
+  
   
 })
 
@@ -69,7 +71,8 @@ router.post('/', upload.single('cover'), async (req, res, next) => {
 
   })
   try {
-  
+    console.log(req.file)
+
     const newPost = await post.save()
     res.redirect('/posts')
 
