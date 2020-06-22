@@ -6,7 +6,9 @@
                 <a href="/posts/<%=post.id%>/comments" >
                     <span class="grid-number"><%=post.title %></span>
                     <figure class="gallery-image">
-                        <img src="https://churchbucket.s3-us-west-2.amazonaws.com/public/uploads/postImages/church3.jpeg">
+                        <img src="https://churchbucket.s3-us-west-2.amazonaws.com/public/uploads/postImages/<%= post.posImage %>">
+                        <img src="https://churchbucket.s3-us-west-2.amazonaws.com/public/uploads/postImages/<%= post.cover %>">
+
                         <figcaption>
                             <p class="post-from">
                                 <%= post.from%>
