@@ -32,7 +32,7 @@ const upload = multer({
     s3BucketEndpoint:true,
     endpoint:"http://" + bucketname + ".s3.amazonaws.com",
     key: function (req, file, cb) {
-        cb(null, 'public/uploads/postImages/' + file.originalname);
+        cb(null, uploadPath + '/' + file.originalname);
     }
   })
   
