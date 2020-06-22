@@ -28,6 +28,8 @@ const upload = multer({
 
   storage: multerS3({
     s3: s3,
+    acl: 'public-read',
+
     bucket: bucketname,
     s3BucketEndpoint:true,
     endpoint:"http://" + bucketname + ".s3.amazonaws.com",
