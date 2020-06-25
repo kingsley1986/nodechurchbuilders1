@@ -32,11 +32,11 @@ const ObjectId = Schema.ObjectId;
 
  })
 
-postSchema.virtual('coverImagePath').get(function() {
-    if(this.postImage != null) {
-        return path.join('/', postImageBasePath, this.postImage)
-    }
-})
+// postSchema.virtual('coverImagePath').get(function() {
+//     if(this.postImage != null) {
+//         return path.join('/', postImageBasePath, this.postImage)
+//     }
+// })
 
  module.exports = mongoose.model('Post', postSchema)
  module.exports.postImageBasePath = postImageBasePath
