@@ -38,8 +38,8 @@ const upload = multer({
     	s3BucketEndpoint:true,
     	endpoint:"http://" + bucketname + ".s3.amazonaws.com",
     	key: function (req, file, cb) {
-			console.log(file.originalname)
-        	cb(null, uploadPath + '/' + file.originalname);
+			const uploadPathWithOriginalName = uploadPath + '/' + file.originalname
+        	cb(null, uploadPathWithOriginalName);
     	}
   	})   
 })
