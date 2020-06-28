@@ -4,9 +4,11 @@
         <% posts.forEach(post => { %>
             <li>   
                 <a href="/posts/<%=post.id%>/comments" >
+                    <%= console.log(post) %>
                     <span class="grid-number"><%=post.title %></span>
                     <figure class="gallery-image">
-                        <img src="https://churchbucket.s3-us-west-2.amazonaws.com/public/uploads/postImages/<%=post.postImage%>">
+                        <img src="<%= post.postImage %>" alt="">
+                        
 
                         <figcaption>
                             <p class="post-from">

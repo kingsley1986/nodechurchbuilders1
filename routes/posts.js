@@ -14,19 +14,18 @@ AWS.config.update({
   	accessKeyId: process.env.AWS_ACCESS_KEY,
   	region: process.env.S3_REGION,
 });
+AWS.config.update({
+  	secretAccessKey: process.env.S3_SECRECT,
+  	accessKeyId: process.env.AWS_ACCESS_KEY,
+  	region: process.env.S3_REGION,
+});
 
 
 const uploadPath = path.join('public', Post.postImageBasePath)
 const imageMineTypes = ['image/jpeg', 'image/png', 'image/gif']
-const bucketname = 'churchbucket';
+const bucketname = 'nodechurchbuilders';
 
-const filFilter = (req, file, cd) => {
-	if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/gif') {
-		cd(null, true)
-	} else {
-		cd(new Error('Invalid mimetype, only jpeg, png and gif'), false);
-	}
-}
+
 
 s3 = new AWS.S3();
 const upload = multer({ 
@@ -63,13 +62,12 @@ router.get('/new', async (req, res, next) => {
 
 // Create blogpost routes
 router.post('/', upload.single('cover'), async (req, res, next) => {
- 	const fileName = req.file != null ? req.file.filename : null
-
+	const fileName = req.file != null ? req.file.filename : null
   	const post = new Post({
     	title: req.body.title,
     	description: req.body.description,
     	from: req.body.from,
-    	postImage: fileName,
+    	postImage: req.file.location,
 
   	})
   	try {
