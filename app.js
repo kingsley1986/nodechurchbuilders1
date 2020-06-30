@@ -37,6 +37,7 @@ var usersRouter = require('./routes/users');
 var eventcommentRouter = require('./routes/event_comments');
 var contactformRouter = require('./routes/contact_forms');
 var programCommentRouter = require('./routes/program_comments');
+var galleryRouter = require('./routes/galleries');
 
 mongoose.connect(process.env.MONGODB_URI ||  process.env.DATABASE_URL,   {
   useNewUrlParser: true,
@@ -124,7 +125,7 @@ app.use('/programs', programRouter);
 app.use('/events', eventcommentRouter);
 //for contact form
 app.use('/contact_form', contactformRouter);
-
+app.use('/galleries', galleryRouter);
 app.use('/programs', programCommentRouter);
 
 
