@@ -82,7 +82,7 @@ router.post('/', upload.single('cover'), async (req, res, next) => {
 });
 
 
-// Get a post Wiht comments
+// Get a post With comments
 router.get("/:id/comments", async (req, res) => {
   	const post = await Post.findOne({_id: req.params.id}).populate(
     	"comments"
