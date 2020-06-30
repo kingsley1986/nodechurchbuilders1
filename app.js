@@ -38,6 +38,7 @@ var eventcommentRouter = require('./routes/event_comments');
 var contactformRouter = require('./routes/contact_forms');
 var programCommentRouter = require('./routes/program_comments');
 var galleryRouter = require('./routes/galleries');
+var adminRouter = require('./routes/admin.router');
 
 mongoose.connect(process.env.MONGODB_URI ||  process.env.DATABASE_URL,   {
   useNewUrlParser: true,
@@ -61,7 +62,8 @@ app.use(express.static('./uploads'));
 app.use(flash());
 
 
-
+// app.use(adminBro.options.rootPath,router )
+// app.listen(8080, () => console.log('AdminBro is under localhost:8080/admin'))
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -128,6 +130,7 @@ app.use('/contact_form', contactformRouter);
 app.use('/galleries', galleryRouter);
 app.use('/programs', programCommentRouter);
 
+app.use('/admin', adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
