@@ -18,10 +18,7 @@ router.post("/:postId/comment", async(req, res) => {
   
       post.comments.push(comment._id);
       await post.save();
-  
-      res.redirect('back');
-    }else{
-      res.redirect('back')
+      res.json(post);
     }
   });
   

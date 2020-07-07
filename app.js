@@ -16,6 +16,8 @@ const check = require('express-validator/check').check;
 const validationResult = require('express-validator/check').validationResult;
 var LocalStrategy = require('passport-local').Strategy;
 var multer = require('multer');
+var cors = require("cors");
+
 // handle file uploads
 var upload = multer({dest: './uploads'});
 
@@ -55,6 +57,7 @@ app.use(require('connect-flash')());
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.locals.rmWhitespace = true;
+app.use(cors());
 
 app.use(expressLayouts);
 

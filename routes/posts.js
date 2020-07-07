@@ -45,14 +45,13 @@ const upload = multer({
 
 // Get all Blog posts
 router.get('/', async (req, res) => {
-  	try {
-    	const posts =  await Post.find({})
-    	res.render('posts/index', {
-     		posts: posts, layout: false,
-    	});
-  	} catch {
-    	res.redirect('/')
-  	}
+	Post.find(function(err, posts) {
+        if (err) {
+            console.log(err);
+        } else {
+           res.json(posts); 
+        }
+    });
 });
 
 // New blogpost routes
@@ -84,12 +83,10 @@ router.post('/', upload.single('cover'), async (req, res, next) => {
 
 // Get a post With comments
 router.get("/:id/comments", async (req, res) => {
-  	const post = await Post.findOne({_id: req.params.id}).populate(
+  	const post = await Post.findById({_id: req.params.id}).populate(
     	"comments"
   	);
-  	res.render('posts/show',{
-    	"post": post, layout: false
-  	});
+	  res.json(post); 
 })
 
 router.get("/edit/:id", async (req, res) => {
