@@ -19,9 +19,7 @@ router.post("/:eventId/eventcomment", async(req, res) => {
       event.eventcomments.push(event_comment._id);
       await event.save();
   
-      res.redirect('back');
-    }else{
-      res.redirect('back')
+      res.json(event);
     }
   });
   
