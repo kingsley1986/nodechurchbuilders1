@@ -6,14 +6,37 @@ const multer = require("multer");
 const path = require("path");
 const sharp = require("sharp");
 
+var AWS = require("aws-sdk");
+var multerS3 = require("multer-s3");
+
+AWS.config.update({
+  secretAccessKey: process.env.S3_SECRECT,
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  region: process.env.S3_REGION,
+});
+AWS.config.update({
+  secretAccessKey: process.env.S3_SECRECT,
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  region: process.env.S3_REGION,
+});
+
 const uploadPath = path.join("public", Event.eventImageBasePath);
 const imageMineTypes = ["image/jpeg", "image/png", "image/gif"];
+const bucketname = "nodechurchbuilders";
 
+s3 = new AWS.S3();
 const upload = multer({
-  dest: uploadPath,
-  fileFilter: (req, file, callback) => {
-    callback(null, imageMineTypes.includes(file.mimetype));
-  },
+  storage: multerS3({
+    s3: s3,
+    acl: "public-read",
+    bucket: bucketname,
+    s3BucketEndpoint: true,
+    endpoint: "http://" + bucketname + ".s3.amazonaws.com",
+    key: function (req, file, cb) {
+      const uploadPathWithOriginalName = uploadPath + "/" + file.originalname;
+      cb(null, uploadPathWithOriginalName);
+    },
+  }),
 });
 
 router.get("/", async (req, res) => {
@@ -98,7 +121,7 @@ router.post("/create", upload.single("eventImage"), async (req, res, next) => {
     closingDate: req.body.closingDate,
     title: req.body.title,
     description: req.body.description,
-    eventImage: fileName,
+    eventImage: req.file.location,
   });
   try {
     const events = await event.save();
