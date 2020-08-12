@@ -3,4 +3,5 @@ node_modules
 sendgrid.env
 sendgrid.env
 .env
+data
 
