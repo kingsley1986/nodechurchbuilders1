@@ -1,0 +1,56 @@
+<%- include('../partials/header.ejs') %>  
+<section class="blog-area pt-5 pb-5" style="position: relative; top:120px;">
+    <div class="container">
+       
+        <div class="row">
+            <% events.forEach(event => { %> 
+            <div class="col-xl-4 col-lg-4 col-md-6 mb-30">
+               
+                <div class="blog-wrapper home-blog-wrapper white-bg">
+                     
+                    <div class="blog-thumb">
+                        <a href="/events/<%=event.id%>/eventcomments" >
+                            <img src="<%= event.eventImagePath %>" alt="" />
+                        </a>
+                    </div>
+                    <div class="row eventdate">
+                        <h1 class="eventstartingdateclass" >Starting:</h1>
+                         
+                        <h2 class="eventstartingdateclass" ><%= event.startingDate.toString().split(' ').slice(0, 4).join(' '); %></h2>
+                       
+                        <h1 class="eventstartingdateclass at" >@</h1>
+                        
+                        <h2 class="eventstartingdateclass" ><%= event.startingDate.toString().split(' ').slice(-6, 5) %></h2>
+                    </div>
+                    
+                    <div class="row eventdate">
+                        <h1 class="eventendingdateclass end">Ends:</h1>
+                         
+                        <h2 class="eventendingdateclass"><%= event.closingDate.toString().split(' ').slice(0, 4).join(' '); %></h2>
+                          
+                        <h2 class="eventendingdateclass at">@</h2>
+                      
+                        <h2 class="eventendingdateclass"><%= event.closingDate.toString().split(' ').slice(-6, 5) %></h2>  
+                    </div>
+                    
+                    <div class="blog-content home-blog">
+                        <h2 class="blog-title">
+                            <a href="/events/<%=event.id%>/eventcomments" ><%=event.title%></a>
+                        </h2>
+                        <p><%= event.description %> </p>
+                    </div>
+                    <div class="link-box home-blog-link">
+                        <a href="/events/<%=event.id%>/eventcomments">Read More</a>
+                    </div>
+                   
+                </div>
+                
+            </div>
+            <% });%>
+            </div>
+            <%= events.length %>
+            <div><a href="/events/new">Add New Post</a></div>
+        </div>
+    </div>
+</section>
+
