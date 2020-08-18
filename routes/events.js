@@ -58,11 +58,21 @@ router.get("/", async (req, res) => {
 // })
 
 // Get a Event Wiht comments
+// router.get("/:id/eventcomments", async (req, res) => {
+//   const event = await Event.findById({ _id: req.params.id }).populate(
+//     "eventcomments"
+//   );
+//   res.json(event);
+// });
+
 router.get("/:id/eventcomments", async (req, res) => {
-  const event = await Event.findOne({ _id: req.params.id }).populate(
-    "eventcomments"
-  );
-  res.json(event);
+  Event.findById({ _id: req.params.id })
+    .populate("eventcomments", "_id name description createdAt", null, {
+      sort: { createdAt: -1 },
+    })
+    .exec(function (error, results) {
+      res.json(results);
+    });
 });
 
 router.get("/lives", async (req, res) => {
@@ -135,16 +145,16 @@ router.post("/create", upload.single("eventImage"), async (req, res, next) => {
 });
 
 //Deleting an event
-router.delete("/:id", function (req, res) {
+router.delete("/:id/delete", function (req, res) {
   const ObjectId = mongoose.Types.ObjectId;
 
   let query = { _id: new ObjectId(req.params.id) };
 
-  Event.deleteOne(query, function (err) {
+  Event.deleteOne(query, function (event, err) {
     if (err) {
       console.log(err);
     }
-    res.send("Success");
+    res.json(event);
   });
 });
 
