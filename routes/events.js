@@ -223,6 +223,7 @@ router.get("/:id/going", async (req, res, next) => {
       event.going += 1;
       event.save();
       res.json(event);
+      console.log(event);
     }
   });
 });
