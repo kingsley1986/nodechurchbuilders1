@@ -27,14 +27,19 @@
 
 
 <body>
+  
+
     <div class="write-new">
 
-        <form action="/programs/<%=program._id%>/programcomment" method="post" id="commentform">
-            <div id="comment-name" >
-                <input type = "text" placeholder = "Name (required)" name="name"  id="name" >
+        <form action="/programs/<%=program._id%>/programimage"  id="commentform" method="POST" enctype="multipart/form-data" >
+            <div id="cot-nme" >
+                <input type = "text" placeholder = "Name (required)" name="title"  id="name" >
             </div>
-                    <textarea placeholder="Write your comment here" name="description" ></textarea>
-            <div class="text-center">       
+            <div>
+                <label>Image</label>
+                <input type="file" name="image" />
+              </div>
+            <div class="text-cter">       
                 <button type="submit">Submit</button>
             </div>
         </form>

@@ -223,7 +223,6 @@ router.get("/:id/going", async (req, res, next) => {
       event.going += 1;
       event.save();
       res.json(event);
-      console.log(event);
     }
   });
 });
@@ -234,7 +233,6 @@ router.post("/:id/coming_with", async (req, res, next) => {
     { _id: req.params.id },
     { $inc: { coming_with: req.body.coming_with } },
     function (error, event) {
-      console.log(event);
       if (error) {
         console.log(error);
       } else {
