@@ -49,11 +49,12 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:id/programcomments", async (req, res) => {
-  const program = await Program.findOne({ _id: req.params.id })
-    .populate("programcomments")
-    .populate("programimages")
-    .exec(function (err, program) {
-      res.json(program);
+  Program.findById({ _id: req.params.id })
+    .populate("programcomments", "_id name description createdAt", null, {
+      sort: { createdAt: -1 },
+    })
+    .exec(function (error, results) {
+      res.json(results);
     });
 });
 
