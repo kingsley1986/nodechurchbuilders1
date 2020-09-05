@@ -53,8 +53,12 @@ router.get("/:id/programcomments", async (req, res) => {
     .populate("programcomments", "_id name description createdAt", null, {
       sort: { createdAt: -1 },
     })
+    .populate("programimages", "_id image title ", null, {
+      sort: { createdAt: -1 },
+    })
     .exec(function (error, results) {
       res.json(results);
+      console.log(results);
     });
 });
 

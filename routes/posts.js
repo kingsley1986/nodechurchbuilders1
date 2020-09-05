@@ -76,9 +76,15 @@ router.post("/", upload.single("cover"), async (req, res, next) => {
 });
 
 // Get a post With comments
+
 router.get("/:id/comments", async (req, res) => {
-  const post = await Post.findById({ _id: req.params.id }).populate("comments");
-  res.json(post);
+  Post.findById({ _id: req.params.id })
+    .populate("comments", "_id name description createdAt", null, {
+      sort: { createdAt: -1 },
+    })
+    .exec(function (error, results) {
+      res.json(results);
+    });
 });
 
 router.get("/edit/:id", async (req, res) => {
