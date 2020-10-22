@@ -76,19 +76,12 @@ router.get("/:id/eventcomments", async (req, res) => {
 });
 
 router.get("/lives", async (req, res) => {
-  try {
-    const lives = await Event.find(
-      { startingDate: { $lt: new Date() } } && {
-        closingDate: { $gt: new Date() },
-      }
-    );
-    res.render("events/live", {
-      lives: lives,
-      layout: false,
-    });
-  } catch {
-    res.redirect("/events");
-  }
+  const lives = await Event.find(
+    { startingDate: { $lt: new Date() } } && {
+      closingDate: { $gt: new Date() },
+    }
+  );
+  res.json(lives);
 });
 
 router.get("/upcomingevents", async (req, res) => {
