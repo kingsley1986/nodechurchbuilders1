@@ -8,6 +8,7 @@ const sharp = require("sharp");
 
 var AWS = require("aws-sdk");
 var multerS3 = require("multer-s3");
+const { exec } = require("child_process");
 
 AWS.config.update({
   secretAccessKey: process.env.S3_SECRECT,
@@ -76,26 +77,21 @@ router.get("/:id/eventcomments", async (req, res) => {
 });
 
 router.get("/lives", async (req, res) => {
-  const lives = await Event.find(
-    { startingDate: { $lt: new Date() } } && {
-      closingDate: { $gt: new Date() },
-    }
-  );
-  res.json(lives);
+  Event.find()
+    .and([
+      { $or: [{ startingDate: { $lt: new Date() } }] },
+      { $or: [{ closingDate: { $gt: new Date() } }] },
+    ])
+    .exec(function (err, results) {
+      res.json(results);
+    });
 });
 
 router.get("/upcomingevents", async (req, res) => {
-  try {
-    const upcomingevents = await Event.find({
-      startingDate: { $gt: new Date() },
-    });
-    res.render("events/upcomings", {
-      upcomingevents: upcomingevents,
-      layout: false,
-    });
-  } catch {
-    res.redirect("/events");
-  }
+  const upcomingevents = await Event.find({
+    startingDate: { $gt: new Date() },
+  });
+  res.json(upcomingevents);
 });
 
 router.get("/pastevents", async (req, res) => {
