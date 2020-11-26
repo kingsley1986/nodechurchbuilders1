@@ -58,7 +58,6 @@ router.get("/:id/programcomments", async (req, res) => {
     })
     .exec(function (error, results) {
       res.json(results);
-      console.log(results);
     });
 });
 

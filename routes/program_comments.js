@@ -2,29 +2,48 @@ const express = require("express");
 const router = express.Router();
 const Programcomment = require("../models/program_comment");
 const Program = require("../models/program");
+const axios = require("axios");
 
 const fs = require("fs");
 
 // CREATE Comment
 router.post("/:programId/programcomment", async (req, res) => {
   const program = await Program.findOne({ _id: req.params.programId });
+  console.log("this is my token ", req.body.token);
+  if (!req.body.token) {
+    return res.status(400).json({ error: "reCaptcha token is missing" });
+  }
 
-  const programComment = new Programcomment();
-  programComment.description = req.body.description;
-  programComment.name = req.body.name;
-  programComment.program = program._id;
-  if (req.body.description && req.body.name) {
-    await programComment.save();
+  try {
+    const googleVerifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=6LecT-sZAAAAAIpc5clt9NoPKkNqMkOtR_mUyAwy
+    &response=${req.body.token}`;
 
-    program.programcomments.push(programComment._id);
-    await program.save();
+    console.log(googleVerifyUrl);
+    const response = await axios.post(googleVerifyUrl);
+    const { success } = response.data;
+    if (success) {
+      const programComment = new Programcomment();
+      programComment.description = req.body.description;
+      programComment.name = req.body.name;
+      programComment.program = program._id;
+      if (req.body.description && req.body.name) {
+        await programComment.save();
 
-    res.json(program);
+        program.programcomments.push(programComment._id);
+        await program.save();
+
+        res.json(program);
+      }
+      return res.json({ success: true });
+    } else {
+      return res.status(400).json({ error: "Invalid Captcha. Try again." });
+    }
+  } catch (e) {
+    return res.status(400).json({ error: "reCaptcha error." });
   }
 });
 
 router.delete("/:programId/:programcommentId", async function (req, res) {
-  console.log("i have been hitted");
   try {
     const program = await Program.findByIdAndUpdate(
       req.params.programId,
