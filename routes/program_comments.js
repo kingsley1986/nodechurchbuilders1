@@ -3,22 +3,22 @@ const router = express.Router();
 const Programcomment = require("../models/program_comment");
 const Program = require("../models/program");
 const axios = require("axios");
+require("dotenv").config();
 
 const fs = require("fs");
 
 // CREATE Comment
 router.post("/:programId/programcomment", async (req, res) => {
   const program = await Program.findOne({ _id: req.params.programId });
-  console.log("this is my token ", req.body.token);
   if (!req.body.token) {
     return res.status(400).json({ error: "reCaptcha token is missing" });
   }
 
   try {
-    const googleVerifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=6LecT-sZAAAAAIpc5clt9NoPKkNqMkOtR_mUyAwy
+    const googleVerifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}
     &response=${req.body.token}`;
 
-    console.log(googleVerifyUrl);
+    // console.log(googleVerifyUrl);
     const response = await axios.post(googleVerifyUrl);
     const { success } = response.data;
     if (success) {
