@@ -12,23 +12,23 @@ router.get("/new", (req, res) => {
 
 router.post("/", (req, res) => {
   const output = `
-        <p>You have a new Request</p>
+        <h1>You Have a New Prayer Request</h1>
         <h3>Contact Details </h3>
         <ul>
-            <li>Name: ${req.body.name}</li>
+            <li><h1>Name: ${req.body.name}</h1></li>
             <li>Email: ${req.body.email}</li> 
-        /ul>
-    <h3>Message</h3>
-    <li>Request: ${req.body.request}</li>
+        </ul>
+    <h3>Prayer Request</h3>
+    <p>Request: ${req.body.request}</p>
     `;
 
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-  console.log(process.env.SENDGRID_API_KEY);
   const msg = {
     to: "chukwumakingsley1@gmail.com",
     from: "chukwumakingsley1@gmail.com",
-    subject: "Hello world",
+    subject: "Prayer Request",
     text: output,
+    html: output,
   };
 
   sgMail
