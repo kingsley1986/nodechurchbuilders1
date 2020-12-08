@@ -121,34 +121,6 @@
         </div>
       </div>
     </div>
-    <h1>Send Us Your Prayer Request</h1>
-    <% if (locals.errors) { %>
-    <ul>
-      <% Object.values(errors).forEach(function(error){ %>
-      <li class="alert-danger"><%= error.msg %></li>
-      <% }); %>
-    </ul>
-    <% } %>
-    <form method="POST" action="/contact_form">
-      <label>Name</label>
-      <input type="text" name="name" id="name" placeholder="Enter Your Name" />
-      <label>Email</label>
-      <input
-        type="text"
-        name="email"
-        id="email"
-        placeholder="Enter Your Email"
-      />
-      <label>Request</label>
-      <textarea
-        name="request"
-        id="request"
-        placeholder="Enter Your  Prayer Request"
-        cols="30"
-        rows="10"
-      ></textarea>
-      <button type="submit">Submit</button>
-    </form>
 
     <script src="/javascripts/jquery-3.3.1.min.js"></script>
     <script src="/stylesheets/bootstrap-4.1.2/popper.js"></script>

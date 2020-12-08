@@ -13,24 +13,18 @@ AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY,
   region: process.env.S3_REGION,
 });
-AWS.config.update({
-  secretAccessKey: process.env.S3_SECRECT,
-  accessKeyId: process.env.AWS_ACCESS_KEY,
-  region: process.env.S3_REGION,
-});
 
 const uploadPath = path.join("public", Program.programImageBasePath);
 const imageMineTypes = ["image/jpeg", "image/png", "image/gif"];
-const bucketname = "nodechurchbuilders";
 
 s3 = new AWS.S3();
 const upload = multer({
   storage: multerS3({
     s3: s3,
     acl: "public-read",
-    bucket: bucketname,
+    bucket: process.env.S3_BUCKET,
     s3BucketEndpoint: true,
-    endpoint: "http://" + bucketname + ".s3.amazonaws.com",
+    endpoint: "http://" + process.env.S3_BUCKET + ".s3.amazonaws.com",
     key: function (req, file, cb) {
       const uploadPathWithOriginalName = uploadPath + "/" + file.originalname;
       cb(null, uploadPathWithOriginalName);
@@ -57,6 +51,7 @@ router.get("/:id/programcomments", async (req, res) => {
       sort: { createdAt: -1 },
     })
     .exec(function (error, results) {
+      console.log(results);
       res.json(results);
     });
 });
@@ -66,7 +61,7 @@ router.get("/new", async (req, res, next) => {
   renderNewPage(res, new Program());
 });
 
-// Create blogpost routes
+//Create blogpost routes
 router.post("/create", upload.single("cover"), async (req, res, next) => {
   const fileName = req.file != null ? req.file.filename : null;
   const program = new Program({
@@ -118,16 +113,62 @@ router.post("/edit/:id", upload.single("cover"), async (req, res, next) => {
   });
 });
 
-router.delete("/:id", function (req, res) {
-  const ObjectId = mongoose.Types.ObjectId;
+// router.delete("/:id/delete", async (req, res) => {
+//   const ObjectId = mongoose.Types.ObjectId;
+//   let query = { _id: new ObjectId(req.params.id) };
+//   console.log("I have been hitted");
 
-  let query = { _id: new ObjectId(req.params.id) };
+//   Program.deleteOne(query, async (err) => {
+//     if (err) {
+//       console.log(err);
+//     }
+//     var params = {
+//       Bucket: bucketname,
+//       Key: Program.programImage,
+//     };
+//     try {
+//       await s3
+//         .deleteObject(params, function (err, data) {
+//           if (err) console.log(err, err.stack);
+//           else console.log("Response:", data);
+//         })
+//         .promise();
+//     } catch (e) {}
+//     res.send("Success");
+//   });
+// });
 
-  Program.deleteOne(query, function (err) {
-    if (err) {
-      console.log(err);
-    }
-    res.send("Success");
+router.delete("/:id/delete", async (req, res) => {
+  Program.findById(req.params.id, function (err, program) {
+    var splittedKey = program.programImage.replace(process.env.SPLITTED, "");
+    const awsCredentials = {
+      secretAccessKey: process.env.S3_SECRECT,
+      accessKeyId: process.env.AWS_ACCESS_KEY,
+      region: process.env.S3_REGION,
+    };
+    var s3 = new AWS.S3(awsCredentials);
+    const params = {
+      Bucket: process.env.S3_BUCKET,
+      Key: splittedKey,
+    };
+    s3.deleteObject(params, (error, data) => {
+      if (error) {
+        res.status(500).send(error);
+      } else {
+        const ObjectId = mongoose.Types.ObjectId;
+
+        let query = { _id: new ObjectId(req.params.id) };
+
+        program.deleteOne(query, function (err) {
+          if (err) {
+            console.log(err);
+          }
+          res.send("Success");
+        });
+        console.log("File has been deleted successfully");
+      }
+      // res.s
+    });
   });
 });
 
