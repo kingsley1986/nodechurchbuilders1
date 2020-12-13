@@ -62,7 +62,7 @@ router.get("/new", async (req, res, next) => {
 });
 
 //Create blogpost routes
-router.post("/create", upload.single("cover"), async (req, res, next) => {
+router.post("/cr", upload.single("cover"), async (req, res, next) => {
   const fileName = req.file != null ? req.file.filename : null;
   const program = new Program({
     programtype: req.body.programtype,
