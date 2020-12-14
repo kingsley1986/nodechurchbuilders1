@@ -8,6 +8,12 @@ const path = require("path");
 var AWS = require("aws-sdk");
 var multerS3 = require("multer-s3");
 
+
+AWS.config.update({
+  secretAccessKey: process.env.S3_SECRECT,
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  region: process.env.S3_REGION,
+});
 AWS.config.update({
   secretAccessKey: process.env.S3_SECRECT,
   accessKeyId: process.env.AWS_ACCESS_KEY,
@@ -16,6 +22,8 @@ AWS.config.update({
 
 const uploadPath = path.join("public", Program.programImageBasePath);
 const imageMineTypes = ["image/jpeg", "image/png", "image/gif"];
+
+
 
 s3 = new AWS.S3();
 const upload = multer({
@@ -62,7 +70,30 @@ router.get("/new", async (req, res, next) => {
 });
 
 //Create blogpost routes
-router.post("/cr", upload.single("cover"), async (req, res, next) => {
+// router.post("/create", upload.single("cover"), async (req, res, next) => {
+//   console.log(req.body)
+//   const fileName = req.file != null ? req.file.filename : null;
+//   const program = new Program({
+//     programtype: req.body.programtype,
+//     title: req.body.title,
+//     description: req.body.description,
+//     programImage: req.file.location,
+//   });
+//   try {
+//     console.log(program);
+//     const programs = await program.save();
+//     res.redirect("/programs");
+//   } catch {
+//     if (program.programImage != null) {
+//       removeprogramImage(program.programImage);
+//     }
+//     res.render("programs/new");
+//   }
+// });
+
+
+
+router.post("/create", upload.single("cover"), async (req, res, next) => {
   const fileName = req.file != null ? req.file.filename : null;
   const program = new Program({
     programtype: req.body.programtype,
@@ -71,12 +102,11 @@ router.post("/cr", upload.single("cover"), async (req, res, next) => {
     programImage: req.file.location,
   });
   try {
-    console.log(program);
     const programs = await program.save();
     res.redirect("/programs");
   } catch {
-    if (program.programImage != null) {
-      removeprogramImage(program.programImage);
+    if (programs.postImage != null) {
+      removePostImage(programs.postImage);
     }
     res.render("programs/new");
   }
