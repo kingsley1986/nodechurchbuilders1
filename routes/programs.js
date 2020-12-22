@@ -169,7 +169,10 @@ router.post("/edit/:id", upload.single("cover"), async (req, res, next) => {
 // });
 
 router.delete("/:id/delete", async (req, res) => {
+  console.log("this is splited",  process.env.SPLITTED)
   Program.findById(req.params.id, function (err, program) {
+    console.log(program.programImage)
+
     var splittedKey = program.programImage.replace(process.env.SPLITTED, "");
     const awsCredentials = {
       secretAccessKey: process.env.S3_SECRECT,

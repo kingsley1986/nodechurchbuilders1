@@ -120,16 +120,54 @@ router.post("/edit/:id", upload.single("cover"), async (req, res, next) => {
 
 // Delete post
 
-router.delete("/:id", function (req, res) {
-  const ObjectId = mongoose.Types.ObjectId;
-  let query = { _id: new ObjectId(req.params.id) };
-  console.log(query);
+// router.delete("/:id", function (req, res) {
+//   const ObjectId = mongoose.Types.ObjectId;
+//   let query = { _id: new ObjectId(req.params.id) };
+//   console.log(query);
 
-  Post.deleteOne(query, function (err) {
-    if (err) {
-      console.log(err);
-    }
-    res.send("Success");
+//   Post.deleteOne(query, function (err) {
+//     if (err) {
+//       console.log(err);
+//     }
+//     res.send("Success");
+//   });
+// });
+
+
+router.delete("/:id/delete", async (req, res) => {
+  console.log("this is splited",  process.env.SPLITTED)
+  Post.findById(req.params.id, function (err, post) {
+    console.log(post.postImage)
+
+    var splittedKey = post.postImage.replace(process.env.SPLITTED, "");
+    const awsCredentials = {
+      secretAccessKey: process.env.S3_SECRECT,
+      accessKeyId: process.env.AWS_ACCESS_KEY,
+      region: process.env.S3_REGION,
+    };
+    var s3 = new AWS.S3(awsCredentials);
+    const params = {
+      Bucket: process.env.S3_BUCKET,
+      Key: splittedKey,
+    };
+    s3.deleteObject(params, (error, data) => {
+      if (error) {
+        res.status(500).send(error);
+      } else {
+        const ObjectId = mongoose.Types.ObjectId;
+
+        let query = { _id: new ObjectId(req.params.id) };
+
+        post.deleteOne(query, function (err) {
+          if (err) {
+            console.log(err);
+          }
+          res.send("Success");
+        });
+        console.log("File has been deleted successfully");
+      }
+      // res.s
+    });
   });
 });
 
