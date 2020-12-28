@@ -8,7 +8,6 @@ const path = require("path");
 var AWS = require("aws-sdk");
 var multerS3 = require("multer-s3");
 
-
 AWS.config.update({
   secretAccessKey: process.env.S3_SECRECT,
   accessKeyId: process.env.AWS_ACCESS_KEY,
@@ -22,8 +21,6 @@ AWS.config.update({
 
 const uploadPath = path.join("public", Program.programImageBasePath);
 const imageMineTypes = ["image/jpeg", "image/png", "image/gif"];
-
-
 
 s3 = new AWS.S3();
 const upload = multer({
@@ -90,8 +87,6 @@ router.get("/new", async (req, res, next) => {
 //     res.render("programs/new");
 //   }
 // });
-
-
 
 router.post("/create", upload.single("cover"), async (req, res, next) => {
   const fileName = req.file != null ? req.file.filename : null;
@@ -169,9 +164,8 @@ router.post("/edit/:id", upload.single("cover"), async (req, res, next) => {
 // });
 
 router.delete("/:id/delete", async (req, res) => {
-  console.log("this is splited",  process.env.SPLITTED)
   Program.findById(req.params.id, function (err, program) {
-    console.log(program.programImage)
+    console.log(program.programImage);
 
     var splittedKey = program.programImage.replace(process.env.SPLITTED, "");
     const awsCredentials = {
