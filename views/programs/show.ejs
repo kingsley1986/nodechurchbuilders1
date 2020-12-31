@@ -8,7 +8,7 @@
                                                         margin-left: auto;
                                                         margin-right: auto;">
                 <div class="welcome-img-show" >
-                    <img  src="<%= program.programImagePath %>"  alt="">
+                    <img  src="<%= program.programImage %>"  alt="">
                 </div></a>
             </div>
             <div class="col-lg-7" style=" 
@@ -24,21 +24,17 @@
         </div>
     </div>
 </section>
-
-
-<body>
   
 
     <div class="write-new">
 
-        <form action="/programs/<%=program._id%>/programimage"  id="commentform" method="POST" enctype="multipart/form-data" >
+        <form action="/programs/<%=program._id%>/programcomment"  id="commentform" method="POST"  >
             <div id="cot-nme" >
-                <input type = "text" placeholder = "Name (required)" name="title"  id="name" >
+                <input type = "text" placeholder = "Name (required)" name="name"  id="name" >
             </div>
             <div>
-                <label>Image</label>
-                <input type="file" name="image" />
-              </div>
+                  <textarea name="description" rows="10" cols="30"></textarea>
+            </div>
             <div class="text-cter">       
                 <button type="submit">Submit</button>
             </div>

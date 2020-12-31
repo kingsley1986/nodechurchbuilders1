@@ -1,7 +1,11 @@
 <h2>Edit Program</h2>
 
-<form action="/programs/edit/<%=program._id %>" method="POST" enctype="multipart/form-data">
-    <%- include('_form_fields') %>
-    <a href="/programs">Cacel</a>
-    <button type="submit">Update</button>
+<form
+  action="/programs/edit/<%=program._id %>"
+  method="POST"
+  enctype="multipart/form-data"
+>
+  <%- include('_form_fields') %>
+  <a href="/programs">Cacel</a>
+  <button type="submit">Update</button>
 </form>

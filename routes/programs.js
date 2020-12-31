@@ -36,8 +36,24 @@ const upload = multer({
     },
   }),
 });
+// console.log(uploadPathWithOriginalName);
+
+// console.log("the thing i need", upload);
 
 router.get("/", async (req, res) => {
+  Program.find(function (err, programs) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render("programs/index", {
+        programs: programs,
+        layout: false,
+      });
+    }
+  });
+});
+
+router.get("/api", async (req, res) => {
   Program.find(function (err, programs) {
     if (err) {
       console.log(err);
@@ -45,6 +61,20 @@ router.get("/", async (req, res) => {
       res.json(programs);
     }
   });
+});
+
+router.get("/:id/programcommentsapi", async (req, res) => {
+  Program.findById({ _id: req.params.id })
+    .populate("programcomments", "_id name description createdAt", null, {
+      sort: { createdAt: -1 },
+    })
+    .populate("programimages", "_id image title ", null, {
+      sort: { createdAt: -1 },
+    })
+    .exec(function (error, results) {
+      console.log(results);
+      res.json(results);
+    });
 });
 
 router.get("/:id/programcomments", async (req, res) => {
@@ -57,7 +87,10 @@ router.get("/:id/programcomments", async (req, res) => {
     })
     .exec(function (error, results) {
       console.log(results);
-      res.json(results);
+      res.render("programs/show", {
+        program: results,
+        layout: false,
+      });
     });
 });
 
@@ -107,34 +140,67 @@ router.post("/create", upload.single("cover"), async (req, res, next) => {
   }
 });
 
-router.get("/:id/:edit", async (req, res, next) => {
+router.get("/:id/edit", async (req, res, next) => {
   Program.findById(req.params.id, function (err, program) {
     if (!program) {
+      console.log("Noooooooooo");
       return next(new Error("Could not load Document"));
     } else {
       res.render("programs/edit", {
         program: program,
+        layout: false,
       });
     }
   });
 });
 
+// router.get("/edit/:id", async (req, res) => {
+//   Event.findById(req.params.id, function (err, event) {
+//     if (!event) {
+//       return next(new Error("Could not load Document"));
+//     } else {
+//       res.render("events/edit", {
+//         event: event,
+//         layout: false,
+//       });
+//     }
+//   });
+// });
+
 router.post("/edit/:id", upload.single("cover"), async (req, res, next) => {
-  const fileName = req.file != null ? req.file.filename : null;
-  console.log(req.body);
-  let program = {};
-  program.programtype = req.body.programtype;
-  program.title = req.body.title;
-  program.description = req.body.description;
-  program.programImage = fileName;
-  let query = { _id: req.params.id };
-  Program.updateOne(query, program, (err, program) => {
-    if (err) {
-      console.log(err);
-      res.redirect("back");
-    } else {
-      res.redirect("/programs");
-    }
+  Program.findById(req.params.id, function (err, program) {
+    var splittedKey = program.programImage.replace(process.env.SPLITTED, "");
+    const awsCredentials = {
+      secretAccessKey: process.env.S3_SECRECT,
+      accessKeyId: process.env.AWS_ACCESS_KEY,
+      region: process.env.S3_REGION,
+    };
+    var s3 = new AWS.S3(awsCredentials);
+    const params = {
+      Bucket: process.env.S3_BUCKET,
+      Key: splittedKey,
+    };
+    s3.deleteObject(params, (error, data) => {
+      if (error) {
+        res.status(500).send(error);
+      } else {
+        let program2 = {};
+        program2.programtype = req.body.programtype;
+        program2.title = req.body.title;
+        program2.description = req.body.description;
+        program2.programImage = req.file.location;
+        let query = { _id: req.params.id };
+        Program.updateOne(query, program2, (err, program) => {
+          if (err) {
+            console.log(err);
+            res.redirect("back");
+          } else {
+            res.redirect("/programs");
+          }
+        });
+      }
+      // res.s
+    });
   });
 });
 
@@ -163,10 +229,8 @@ router.post("/edit/:id", upload.single("cover"), async (req, res, next) => {
 //   });
 // });
 
-router.delete("/:id/delete", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   Program.findById(req.params.id, function (err, program) {
-    console.log(program.programImage);
-
     var splittedKey = program.programImage.replace(process.env.SPLITTED, "");
     const awsCredentials = {
       secretAccessKey: process.env.S3_SECRECT,
@@ -190,7 +254,7 @@ router.delete("/:id/delete", async (req, res) => {
           if (err) {
             console.log(err);
           }
-          res.send("Success");
+          res.json({ redirect: "/programs" });
         });
         console.log("File has been deleted successfully");
       }
@@ -198,6 +262,18 @@ router.delete("/:id/delete", async (req, res) => {
     });
   });
 });
+
+// router.delete("/:id", (req, res) => {
+//   console.log(req.params.id);
+//   const id = req.params.id;
+//   Program.findByIdAndDelete(id)
+//     .then((results) => {
+//       res.json({ redirect: "/programs" });
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// });
 
 //Removes unsaved post image
 function removeprogramImage(fileName) {

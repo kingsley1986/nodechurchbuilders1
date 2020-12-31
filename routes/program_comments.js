@@ -8,7 +8,7 @@ require("dotenv").config();
 const fs = require("fs");
 
 // CREATE Comment
-router.post("/:programId/programcomment", async (req, res) => {
+router.post("/:programId/programcommentapi", async (req, res) => {
   const program = await Program.findOne({ _id: req.params.programId });
   if (!req.body.token) {
     return res.status(400).json({ error: "reCaptcha token is missing" });
@@ -40,6 +40,25 @@ router.post("/:programId/programcomment", async (req, res) => {
     }
   } catch (e) {
     return res.status(400).json({ error: "reCaptcha error." });
+  }
+});
+
+router.post("/:programId/programcomment", async (req, res) => {
+  const program = await Program.findOne({ _id: req.params.programId });
+
+  const programComment = new Programcomment();
+  programComment.description = req.body.description;
+  programComment.name = req.body.name;
+  programComment.program = program._id;
+  if (req.body.description && req.body.name) {
+    await programComment.save();
+
+    program.programcomments.push(programComment._id);
+    await program.save();
+
+    res.redirect("back");
+  } else {
+    res.redirect("back");
   }
 });
 
