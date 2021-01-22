@@ -40,7 +40,7 @@ const upload = multer({
   }),
 });
 
-router.get("/", async (req, res) => {
+router.get("/api", async (req, res) => {
   Event.find(function (err, events) {
     if (err) {
       console.log(err);
@@ -48,6 +48,19 @@ router.get("/", async (req, res) => {
       res.json(events);
     }
   });
+});
+
+router.get("/", async (req, res) => {
+  try {
+    const events = await Event.find({});
+    console.log(events);
+    res.render("events/index", {
+      events: events,
+      layout: false,
+    });
+  } catch {
+    res.redirect("/events");
+  }
 });
 
 // // Get a single comment
@@ -66,7 +79,7 @@ router.get("/", async (req, res) => {
 //   res.json(event);
 // });
 
-router.get("/:id/eventcomments", async (req, res) => {
+router.get("/:id/eventcomments/api", async (req, res) => {
   Event.findById({ _id: req.params.id })
     .populate("eventcomments", "_id name description createdAt", null, {
       sort: { createdAt: -1 },
@@ -74,6 +87,21 @@ router.get("/:id/eventcomments", async (req, res) => {
     .exec(function (error, results) {
       res.json(results);
     });
+});
+
+router.get("/:id/eventcomments/", async (req, res) => {
+  const event = await Event.findById({ _id: req.params.id }).populate(
+    "eventcomments",
+    "_id name description createdAt",
+    null,
+    {
+      sort: { createdAt: -1 },
+    }
+  );
+  res.render("events/show", {
+    event: event,
+    layout: false,
+  });
 });
 
 router.get("/lives", async (req, res) => {
@@ -112,7 +140,8 @@ router.get("/new", async (req, res, next) => {
 });
 
 // Create Events routes
-router.post("/create", upload.single("eventImage"), async (req, res, next) => {
+router.post("/create", upload.single("cover"), async (req, res, next) => {
+  console.log(req.file);
   const fileName = req.file != null ? req.file.filename : null;
 
   const event = new Event({
@@ -147,11 +176,10 @@ router.post("/create", upload.single("eventImage"), async (req, res, next) => {
 //   });
 // });
 
-router.delete("/:id/delete", async (req, res) => {
-  console.log("this is splited",  process.env.SPLITTED)
-  Event.findById(req.params.id, function (err, event) {
-    console.log(event.eventImage)
+router.delete("/:id", async (req, res) => {
+  console.log("I am deleting now");
 
+  Event.findById(req.params.id, function (err, event) {
     var splittedKey = event.eventImage.replace(process.env.SPLITTED, "");
     const awsCredentials = {
       secretAccessKey: process.env.S3_SECRECT,
@@ -184,7 +212,7 @@ router.delete("/:id/delete", async (req, res) => {
   });
 });
 
-router.get("/edit/:id", async (req, res) => {
+router.get("/:id/edit", async (req, res) => {
   Event.findById(req.params.id, function (err, event) {
     if (!event) {
       return next(new Error("Could not load Document"));
@@ -197,29 +225,112 @@ router.get("/edit/:id", async (req, res) => {
   });
 });
 
-router.post(
-  "/edit/:id",
-  upload.single("eventImage"),
-  async (req, res, next) => {
-    const fileName = req.file != null ? req.file.filename : null;
-    console.log(req.body);
-    let event = {};
-    event.title = req.body.title;
-    event.description = req.body.description;
-    event.eventImage = fileName;
-    event.startingDate = req.body.startingDate;
-    event.closingDate = req.body.closingDate;
+// router.post(
+//   "/edit/:id",
+//   upload.single("eventImage"),
+//   async (req, res, next) => {
+//     const fileName = req.file != null ? req.file.filename : null;
+//     console.log(req.body);
+//     let event = {};
+//     event.title = req.body.title;
+//     event.description = req.body.description;
+//     event.eventImage = fileName;
+//     event.startingDate = req.body.startingDate;
+//     event.closingDate = req.body.closingDate;
+//     let query = { _id: req.params.id };
+//     Event.updateOne(query, event, (err, event) => {
+//       if (err) {
+//         console.log(err);
+//         res.redirect("back");
+//       } else {
+//         res.redirect("/events");
+//       }
+//     });
+//   }
+// );
+
+// router.post("/:id/update", upload.single("cover"), async (req, res, next) => {
+//   console.log(req.file);
+
+//   Event.findById(req.params.id, function (err, event) {
+//     var splittedKey = event.eventImage
+//       ? event.eventImage.replace(process.env.SPLITTED, "")
+//       : "";
+//     const awsCredentials = {
+//       secretAccessKey: process.env.S3_SECRECT,
+//       accessKeyId: process.env.AWS_ACCESS_KEY,
+//       region: process.env.S3_REGION,
+//     };
+//     var s3 = new AWS.S3(awsCredentials);
+//     const params = {
+//       Bucket: process.env.S3_BUCKET,
+//       Key: splittedKey,
+//     };
+//     s3.deleteObject(params, (error, data) => {
+//       let event2 = {};
+//       event2.title = req.body.title;
+//       event2.description = req.body.description;
+//       event2.startingDate = req.body.startingDate;
+//       event2.closingDate = req.body.closingDate;
+//       event2.eventImage = req.file.location;
+//       let query = { _id: req.params.id };
+//       Event.updateOne(query, event2, (err, event) => {
+//         if (err) {
+//           console.log(err);
+//           res.redirect("back");
+//         } else {
+//           res.redirect("/events");
+//         }
+//       });
+
+//       // res.s
+//     });
+//   });
+// });
+
+router.post("/:id/update", upload.single("cover"), async (req, res, next) => {
+  // console.log(req.file);
+
+  Event.findById(req.params.id, function (err, event) {
+    if (req.file !== undefined) {
+      var splittedKey = event.eventImage.replace(process.env.SPLITTED, "");
+      const awsCredentials = {
+        secretAccessKey: process.env.S3_SECRECT,
+        accessKeyId: process.env.AWS_ACCESS_KEY,
+        region: process.env.S3_REGION,
+      };
+      var s3 = new AWS.S3(awsCredentials);
+      const params = {
+        Bucket: process.env.S3_BUCKET,
+        Key: splittedKey,
+      };
+      s3.deleteObject(params, (error, data) => {});
+    }
+    let event2 = {};
+    event2.title = req.body.title;
+    event2.description = req.body.description;
+    if (req.body.startingDate) {
+      event2.startingDate = req.body.startingDate;
+    }
+    if (req.body.closingDate) {
+      event2.closingDate = req.body.closingDate;
+    }
+    if (req.file) {
+      event2.eventImage = req.file.location;
+    }
     let query = { _id: req.params.id };
-    Event.updateOne(query, event, (err, event) => {
+    Event.updateOne(query, event2, (err, event) => {
       if (err) {
         console.log(err);
         res.redirect("back");
       } else {
-        res.redirect("/events");
+        res.redirect("/programs");
       }
     });
-  }
-);
+
+    // res.s
+  });
+});
 
 //Removes unsaved post image
 function removeeventImage(fileName) {

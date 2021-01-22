@@ -3,11 +3,13 @@
     <div class="row">
         <article class=" ">
             <h3><%= post.title %></h3>
-            <img class="post-show-image" src="<%= post.coverImagePath %>">
+            <img class="post-show-image" src="<%= post.postImage %>">
             <h4><%= moment(post.createdAt).fromNow(); %></h4>
             <h4><%= post.from %></h4>
             <p class="col-md-6 offset-md-3" ><%= post.description %></p>
         </article>
+        <a href="/posts/<%= post.id %>/edit">Edit</a>
+
     </div>  
 </main>
         

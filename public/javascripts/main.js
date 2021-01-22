@@ -303,3 +303,15 @@ trashcan.addEventListener("click", (e) => {
     .then((data) => (window.location.href = data.redirect))
     .catch((error) => console.log(error));
 });
+
+const trashcan2 = document.querySelector("a.deleter");
+
+trashcan2.addEventListener("click", (e) => {
+  const endpoint = `/events/${trashcan2.dataset.doc}`;
+  fetch(endpoint, {
+    method: "DELETE",
+  })
+    .then((response) => response.json())
+    .then((data) => (window.location.href = data.redirect))
+    .catch((error) => console.log(error));
+});

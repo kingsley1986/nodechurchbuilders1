@@ -40,12 +40,25 @@ const upload = multer({
 });
 
 // Get all Blog posts
-router.get("/", async (req, res) => {
+router.get("/api", async (req, res) => {
   Post.find(function (err, posts) {
     if (err) {
       console.log(err);
     } else {
       res.json(posts);
+    }
+  });
+});
+
+router.get("/", async (req, res) => {
+  Post.find(function (err, posts) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render("posts/index", {
+        posts: posts,
+        layout: false,
+      });
     }
   });
 });
@@ -57,7 +70,6 @@ router.get("/new", async (req, res, next) => {
 
 // Create blogpost routes
 router.post("/", upload.single("cover"), async (req, res, next) => {
-  const fileName = req.file != null ? req.file.filename : null;
   const post = new Post({
     title: req.body.title,
     description: req.body.description,
@@ -77,7 +89,7 @@ router.post("/", upload.single("cover"), async (req, res, next) => {
 
 // Get a post With comments
 
-router.get("/:id/comments", async (req, res) => {
+router.get("/:id/comments/api", async (req, res) => {
   Post.findById({ _id: req.params.id })
     .populate("comments", "_id name description createdAt", null, {
       sort: { createdAt: -1 },
@@ -87,9 +99,36 @@ router.get("/:id/comments", async (req, res) => {
     });
 });
 
-router.get("/edit/:id", async (req, res) => {
+router.get("/:id/comments", async (req, res) => {
+  Post.findById({ _id: req.params.id })
+    .populate("comments", "_id name description createdAt", null, {
+      sort: { createdAt: -1 },
+    })
+    .exec(function (error, post) {
+      res.render("posts/show", {
+        post: post,
+        layout: false,
+      });
+    });
+});
+
+// router.get("/edit/:id", async (req, res) => {
+//   Post.findById(req.params.id, function (err, post) {
+//     if (!post) {
+//       return next(new Error("Could not load Document"));
+//     } else {
+//       res.render("posts/edit", {
+//         post: post,
+//         layout: false,
+//       });
+//     }
+//   });
+// });
+
+router.get("/:id/edit", async (req, res, next) => {
   Post.findById(req.params.id, function (err, post) {
     if (!post) {
+      console.log("Noooooooooo");
       return next(new Error("Could not load Document"));
     } else {
       res.render("posts/edit", {
@@ -101,22 +140,95 @@ router.get("/edit/:id", async (req, res) => {
 });
 
 router.post("/edit/:id", upload.single("cover"), async (req, res, next) => {
-  const fileName = req.file != null ? req.file.filename : null;
-  let post = {};
-  post.title = req.body.title;
-  post.description = req.body.description;
-  post.from = req.body.from;
-  post.postImage = fileName;
-  let query = { _id: req.params.id };
-  Post.updateOne(query, post, (err, post) => {
-    if (err) {
-      console.log(err);
-      res.redirect("back");
-    } else {
-      res.redirect("/posts");
-    }
+  Post.findById(req.params.id, function (err, post) {
+    var splittedKey = program.postImage.replace(process.env.SPLITTED, "");
+    const awsCredentials = {
+      secretAccessKey: process.env.S3_SECRECT,
+      accessKeyId: process.env.AWS_ACCESS_KEY,
+      region: process.env.S3_REGION,
+    };
+    var s3 = new AWS.S3(awsCredentials);
+    const params = {
+      Bucket: process.env.S3_BUCKET,
+      Key: splittedKey,
+    };
+    s3.deleteObject(params, (error, data) => {
+      if (error) {
+        res.status(500).send(error);
+      } else {
+        let post2 = {};
+        post2.from = req.body.from;
+        post2.title = req.body.title;
+        post2.description = req.body.description;
+        post2.programImage = req.file.location;
+        let query = { _id: req.params.id };
+        Post.updateOne(query, post2, (err, post) => {
+          if (err) {
+            console.log(err);
+            res.redirect("back");
+          } else {
+            res.redirect("/post");
+          }
+        });
+      }
+      // res.s
+    });
   });
 });
+
+// router.post("/edit/:id", upload.single("cover"), async (req, res, next) => {
+//   const fileName = req.file != null ? req.file.filename : null;
+//   let post = {};
+//   post.title = req.body.title;
+//   post.description = req.body.description;
+//   post.from = req.body.from;
+//   post.postImage = fileName;
+//   let query = { _id: req.params.id };
+//   Post.updateOne(query, post, (err, post) => {
+//     if (err) {
+//       console.log(err);
+//       res.redirect("back");
+//     } else {
+//       res.redirect("/posts");
+//     }
+//   });
+// });
+
+// router.post("/edit/:id", upload.single("cover"), async (req, res, next) => {
+//   Post.findById(req.params.id, function (err, post) {
+//     var splittedKey = post.programImage.replace(process.env.SPLITTED, "");
+//     const awsCredentials = {
+//       secretAccessKey: process.env.S3_SECRECT,
+//       accessKeyId: process.env.AWS_ACCESS_KEY,
+//       region: process.env.S3_REGION,
+//     };
+//     var s3 = new AWS.S3(awsCredentials);
+//     const params = {
+//       Bucket: process.env.S3_BUCKET,
+//       Key: splittedKey,
+//     };
+//     s3.deleteObject(params, (error, data) => {
+//       if (error) {
+//         res.status(500).send(error);
+//       } else {
+//         let program2 = {};
+//         post2.title = req.body.title;
+//         post2.description = req.body.description;
+//         post2.postImage = req.file.location;
+//         let query = { _id: req.params.id };
+//         Post.updateOne(query, post2, (err, post) => {
+//           if (err) {
+//             console.log(err);
+//             res.redirect("back");
+//           } else {
+//             res.redirect("/programs");
+//           }
+//         });
+//       }
+//       // res.s
+//     });
+//   });
+// });
 
 // Delete post
 
@@ -133,11 +245,10 @@ router.post("/edit/:id", upload.single("cover"), async (req, res, next) => {
 //   });
 // });
 
-
 router.delete("/:id/delete", async (req, res) => {
-  console.log("this is splited",  process.env.SPLITTED)
+  console.log("this is splited", process.env.SPLITTED);
   Post.findById(req.params.id, function (err, post) {
-    console.log(post.postImage)
+    console.log(post.postImage);
 
     var splittedKey = post.postImage.replace(process.env.SPLITTED, "");
     const awsCredentials = {
