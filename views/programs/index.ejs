@@ -54,3 +54,16 @@
   </div>
   <li><a href="/programs/new">Add New Program</a></li>
 </div>
+
+<script>
+  const trashcan = document.querySelector("a.delete");
+  trashcan.addEventListener("click", (e) => {
+    const endpoint = `/programs/${trashcan.dataset.doc}`;
+    fetch(endpoint, {
+      method: "DELETE",
+    })
+      .then((response) => response.json())
+      .then((data) => (window.location.href = data.redirect))
+      .catch((error) => console.log(error));
+  });
+</script>

@@ -180,27 +180,45 @@ router.post("/edit/:id", upload.single("cover"), async (req, res, next) => {
       Bucket: process.env.S3_BUCKET,
       Key: splittedKey,
     };
-    s3.deleteObject(params, (error, data) => {
-      if (error) {
-        res.status(500).send(error);
-      } else {
-        let program2 = {};
-        program2.programtype = req.body.programtype;
-        program2.title = req.body.title;
-        program2.description = req.body.description;
-        program2.programImage = req.file.location;
-        let query = { _id: req.params.id };
-        Program.updateOne(query, program2, (err, program) => {
-          if (err) {
-            console.log(err);
-            res.redirect("back");
-          } else {
-            res.redirect("/programs");
-          }
-        });
-      }
-      // res.s
-    });
+    if (req.file) {
+      s3.deleteObject(params, (error, data) => {
+        if (error) {
+          res.status(500).send(error);
+        } else {
+          let program2 = {};
+          program2.programtype = req.body.programtype;
+          program2.title = req.body.title;
+          program2.description = req.body.description;
+          program2.programImage = req.file.location;
+          let query = { _id: req.params.id };
+          Program.updateOne(query, program2, (err, program) => {
+            if (err) {
+              console.log(err);
+              res.redirect("back");
+            } else {
+              res.redirect("/programs");
+            }
+          });
+        }
+      });
+    } else if (!req.file) {
+      let program2 = {};
+      program2.programtype = req.body.programtype;
+      program2.title = req.body.title;
+      program2.description = req.body.description;
+      // program2.programImage = req.file.location;
+      let query = { _id: req.params.id };
+      Program.updateOne(query, program2, (err, program) => {
+        if (err) {
+          console.log(err);
+          res.redirect("back");
+        } else {
+          res.redirect("/programs");
+        }
+      });
+    }
+
+    // res.s
   });
 });
 

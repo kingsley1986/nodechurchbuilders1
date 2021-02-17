@@ -141,7 +141,7 @@ router.get("/:id/edit", async (req, res, next) => {
 
 router.post("/edit/:id", upload.single("cover"), async (req, res, next) => {
   Post.findById(req.params.id, function (err, post) {
-    var splittedKey = program.postImage.replace(process.env.SPLITTED, "");
+    var splittedKey = post.postImage.replace(process.env.SPLITTED, "");
     const awsCredentials = {
       secretAccessKey: process.env.S3_SECRECT,
       accessKeyId: process.env.AWS_ACCESS_KEY,
@@ -160,14 +160,14 @@ router.post("/edit/:id", upload.single("cover"), async (req, res, next) => {
         post2.from = req.body.from;
         post2.title = req.body.title;
         post2.description = req.body.description;
-        post2.programImage = req.file.location;
+        post2.postImage = req.file.location;
         let query = { _id: req.params.id };
         Post.updateOne(query, post2, (err, post) => {
           if (err) {
             console.log(err);
             res.redirect("back");
           } else {
-            res.redirect("/post");
+            res.redirect("/posts");
           }
         });
       }
