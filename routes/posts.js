@@ -139,9 +139,47 @@ router.get("/:id/edit", async (req, res, next) => {
   });
 });
 
+// router.post("/edit/:id", upload.single("cover"), async (req, res, next) => {
+//   Post.findById(req.params.id, function (err, post) {
+//     var splittedKey = post.postImage.replace(process.env.SPLITTED, "");
+//     const awsCredentials = {
+//       secretAccessKey: process.env.S3_SECRECT,
+//       accessKeyId: process.env.AWS_ACCESS_KEY,
+//       region: process.env.S3_REGION,
+//     };
+//     var s3 = new AWS.S3(awsCredentials);
+//     const params = {
+//       Bucket: process.env.S3_BUCKET,
+//       Key: splittedKey,
+//     };
+//     s3.deleteObject(params, (error, data) => {
+//       if (error) {
+//         res.status(500).send(error);
+//       } else {
+//         let post2 = {};
+//         post2.from = req.body.from;
+//         post2.title = req.body.title;
+//         post2.description = req.body.description;
+//         post2.postImage = req.file.location;
+//         let query = { _id: req.params.id };
+//         Post.updateOne(query, post2, (err, post) => {
+//           if (err) {
+//             console.log(err);
+//             res.redirect("back");
+//           } else {
+//             res.redirect("/posts");
+//           }
+//         });
+//       }
+//       // res.s
+//     });
+//   });
+// });
+
 router.post("/edit/:id", upload.single("cover"), async (req, res, next) => {
   Post.findById(req.params.id, function (err, post) {
     var splittedKey = post.postImage.replace(process.env.SPLITTED, "");
+
     const awsCredentials = {
       secretAccessKey: process.env.S3_SECRECT,
       accessKeyId: process.env.AWS_ACCESS_KEY,
@@ -152,27 +190,44 @@ router.post("/edit/:id", upload.single("cover"), async (req, res, next) => {
       Bucket: process.env.S3_BUCKET,
       Key: splittedKey,
     };
-    s3.deleteObject(params, (error, data) => {
-      if (error) {
-        res.status(500).send(error);
-      } else {
-        let post2 = {};
-        post2.from = req.body.from;
-        post2.title = req.body.title;
-        post2.description = req.body.description;
-        post2.postImage = req.file.location;
-        let query = { _id: req.params.id };
-        Post.updateOne(query, post2, (err, post) => {
-          if (err) {
-            console.log(err);
-            res.redirect("back");
-          } else {
-            res.redirect("/posts");
-          }
-        });
-      }
-      // res.s
-    });
+
+    if (req.file) {
+      s3.deleteObject(params, (error, data) => {
+        if (error) {
+          res.status(500).send(error);
+        } else {
+          let post2 = {};
+          post2.title = req.body.title;
+          post2.description = req.body.description;
+          post2.postImage = req.file.location;
+          let query = { _id: req.params.id };
+          Post.updateOne(query, post2, (err, post) => {
+            if (err) {
+              console.log(err);
+              res.redirect("back");
+            } else {
+              res.redirect("/posts");
+            }
+          });
+        }
+      });
+    } else if (!req.file) {
+      let post2 = {};
+      post2.title = req.body.title;
+      post2.description = req.body.description;
+      post2.from = req.body.from;
+      let query = { _id: req.params.id };
+      Post.updateOne(query, post2, (err, post) => {
+        if (err) {
+          console.log(err);
+          res.redirect("back");
+        } else {
+          res.redirect("/posts");
+        }
+      });
+    }
+
+    // res.s
   });
 });
 

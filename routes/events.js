@@ -225,30 +225,6 @@ router.get("/:id/edit", async (req, res) => {
   });
 });
 
-// router.post(
-//   "/edit/:id",
-//   upload.single("eventImage"),
-//   async (req, res, next) => {
-//     const fileName = req.file != null ? req.file.filename : null;
-//     console.log(req.body);
-//     let event = {};
-//     event.title = req.body.title;
-//     event.description = req.body.description;
-//     event.eventImage = fileName;
-//     event.startingDate = req.body.startingDate;
-//     event.closingDate = req.body.closingDate;
-//     let query = { _id: req.params.id };
-//     Event.updateOne(query, event, (err, event) => {
-//       if (err) {
-//         console.log(err);
-//         res.redirect("back");
-//       } else {
-//         res.redirect("/events");
-//       }
-//     });
-//   }
-// );
-
 // router.post("/:id/update", upload.single("cover"), async (req, res, next) => {
 //   console.log(req.file);
 
@@ -289,48 +265,109 @@ router.get("/:id/edit", async (req, res) => {
 // });
 
 router.post("/:id/update", upload.single("cover"), async (req, res, next) => {
-  // console.log(req.file);
-
   Event.findById(req.params.id, function (err, event) {
-    if (req.file !== undefined) {
-      var splittedKey = event.eventImage.replace(process.env.SPLITTED, "");
-      const awsCredentials = {
-        secretAccessKey: process.env.S3_SECRECT,
-        accessKeyId: process.env.AWS_ACCESS_KEY,
-        region: process.env.S3_REGION,
-      };
-      var s3 = new AWS.S3(awsCredentials);
-      const params = {
-        Bucket: process.env.S3_BUCKET,
-        Key: splittedKey,
-      };
-      s3.deleteObject(params, (error, data) => {});
-    }
-    let event2 = {};
-    event2.title = req.body.title;
-    event2.description = req.body.description;
-    if (req.body.startingDate) {
-      event2.startingDate = req.body.startingDate;
-    }
-    if (req.body.closingDate) {
-      event2.closingDate = req.body.closingDate;
-    }
+    var splittedKey = event.eventImage.replace(process.env.SPLITTED, "");
+
+    const awsCredentials = {
+      secretAccessKey: process.env.S3_SECRECT,
+      accessKeyId: process.env.AWS_ACCESS_KEY,
+      region: process.env.S3_REGION,
+    };
+    var s3 = new AWS.S3(awsCredentials);
+    const params = {
+      Bucket: process.env.S3_BUCKET,
+      Key: splittedKey,
+    };
+
     if (req.file) {
-      event2.eventImage = req.file.location;
+      s3.deleteObject(params, (error, data) => {
+        if (error) {
+          res.status(500).send(error);
+        } else {
+          let event2 = {};
+
+          event2.title = req.body.title;
+          event2.description = req.body.description;
+          event2.startingDate = req.body.startingDate;
+          event2.closingDate = req.body.closingDate;
+          event2.eventImage = req.file.location;
+          let query = { _id: req.params.id };
+          Event.updateOne(query, event2, (err, event) => {
+            if (err) {
+              console.log(err);
+              res.redirect("back");
+            } else {
+              res.redirect("/events");
+            }
+          });
+        }
+      });
+    } else if (!req.file) {
+      let event2 = {};
+
+      event2.title = req.body.title;
+      event2.description = req.body.description;
+      event2.startingDate = req.body.startingDate;
+      event2.closingDate = req.body.closingDate;
+      // program2.programImage = req.file.location;
+      let query = { _id: req.params.id };
+      Event.updateOne(query, event2, (err, event) => {
+        if (err) {
+          console.log(err);
+          res.redirect("back");
+        } else {
+          res.redirect("/events");
+        }
+      });
     }
-    let query = { _id: req.params.id };
-    Event.updateOne(query, event2, (err, event) => {
-      if (err) {
-        console.log(err);
-        res.redirect("back");
-      } else {
-        res.redirect("/programs");
-      }
-    });
 
     // res.s
   });
 });
+
+// router.post("/:id/update", upload.single("cover"), async (req, res, next) => {
+//   // console.log(req.file);
+
+//   Event.findById(req.params.id, function (err, event) {
+//     if (req.file !== undefined) {
+//       var splittedKey = event.eventImage.replace(process.env.SPLITTED, "");
+//       const awsCredentials = {
+//         secretAccessKey: process.env.S3_SECRECT,
+//         accessKeyId: process.env.AWS_ACCESS_KEY,
+//         region: process.env.S3_REGION,
+//       };
+//       var s3 = new AWS.S3(awsCredentials);
+//       const params = {
+//         Bucket: process.env.S3_BUCKET,
+//         Key: splittedKey,
+//       };
+//       s3.deleteObject(params, (error, data) => {});
+//     }
+//     let event2 = {};
+//     event2.title = req.body.title;
+//     event2.description = req.body.description;
+//     if (req.body.startingDate) {
+//       event2.startingDate = req.body.startingDate;
+//     }
+//     if (req.body.closingDate) {
+//       event2.closingDate = req.body.closingDate;
+//     }
+//     if (req.file) {
+//       event2.eventImage = req.file.location;
+//     }
+//     let query = { _id: req.params.id };
+//     Event.updateOne(query, event2, (err, event) => {
+//       if (err) {
+//         console.log(err);
+//         res.redirect("back");
+//       } else {
+//         res.redirect("/programs");
+//       }
+//     });
+
+//     // res.s
+//   });
+// });
 
 //Removes unsaved post image
 function removeeventImage(fileName) {

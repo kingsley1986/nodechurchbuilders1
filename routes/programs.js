@@ -170,6 +170,7 @@ router.get("/:id/edit", async (req, res, next) => {
 router.post("/edit/:id", upload.single("cover"), async (req, res, next) => {
   Program.findById(req.params.id, function (err, program) {
     var splittedKey = program.programImage.replace(process.env.SPLITTED, "");
+
     const awsCredentials = {
       secretAccessKey: process.env.S3_SECRECT,
       accessKeyId: process.env.AWS_ACCESS_KEY,
@@ -180,6 +181,7 @@ router.post("/edit/:id", upload.single("cover"), async (req, res, next) => {
       Bucket: process.env.S3_BUCKET,
       Key: splittedKey,
     };
+
     if (req.file) {
       s3.deleteObject(params, (error, data) => {
         if (error) {

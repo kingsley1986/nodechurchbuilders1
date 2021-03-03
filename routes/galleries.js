@@ -39,8 +39,8 @@ const upload = multer({
   }),
 });
 
-// Get all Image Galleries
-router.get("/", async (req, res) => {
+// Get all Image Galleries API'S
+router.get("/api", async (req, res) => {
   Gallery.find(function (err, galleries) {
     if (err) {
       console.log(err);
@@ -48,6 +48,32 @@ router.get("/", async (req, res) => {
       res.json(galleries);
     }
   });
+});
+
+// Get all Image Galleries
+router.get("/", async (req, res) => {
+  Gallery.find(function (err, galleries) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render("galleries/index", {
+        galleries: galleries,
+        layout: false,
+      });
+    }
+  });
+});
+
+router.get("/:id", async (req, res) => {
+  Gallery.findById({ _id: req.params.id, sort: { createdAt: -1 } }).exec(
+    function (error, results) {
+      console.log(results);
+      res.render("galleries/show", {
+        gallery: results,
+        layout: false,
+      });
+    }
+  );
 });
 
 // New Gallery routes
@@ -87,21 +113,74 @@ router.get("/edit/:id", async (req, res) => {
 });
 
 router.post("/edit/:id", upload.single("cover"), async (req, res, next) => {
-  const fileName = req.file != null ? req.file.filename : null;
-  let gallery = {};
-  gallery.title = req.body.title;
-  gallery.galleryImage = req.file.location;
+  Gallery.findById(req.params.id, function (err, gallery) {
+    var splittedKey = gallery.galleryImage.replace(process.env.SPLITTED, "");
 
-  let query = { _id: req.params.id };
-  Gallery.updateOne(query, gallery, (err, gallery) => {
-    if (err) {
-      console.log(err);
-      res.redirect("back");
-    } else {
-      res.redirect("/galleries");
+    const awsCredentials = {
+      secretAccessKey: process.env.S3_SECRECT,
+      accessKeyId: process.env.AWS_ACCESS_KEY,
+      region: process.env.S3_REGION,
+    };
+    var s3 = new AWS.S3(awsCredentials);
+    const params = {
+      Bucket: process.env.S3_BUCKET,
+      Key: splittedKey,
+    };
+
+    if (req.file) {
+      s3.deleteObject(params, (error, data) => {
+        if (error) {
+          res.status(500).send(error);
+        } else {
+          let gallery2 = {};
+          gallery2.title = req.body.title;
+          gallery2.galleryImage = req.file.location;
+          let query = { _id: req.params.id };
+          Gallery.updateOne(query, gallery2, (err, gallery) => {
+            if (err) {
+              console.log(err);
+              res.redirect("back");
+            } else {
+              res.redirect("/galleries");
+            }
+          });
+        }
+      });
+    } else if (!req.file) {
+      gallery2 = {};
+      gallery2.title = req.body.title;
+      // program2.programImage = req.file.location;
+      let query = { _id: req.params.id };
+      Gallery.updateOne(query, gallery2, (err, gallery) => {
+        if (err) {
+          console.log(err);
+          res.redirect("back");
+        } else {
+          res.redirect("/galleries");
+        }
+      });
     }
+
+    // res.s
   });
 });
+
+// router.post("/edit/:id", upload.single("cover"), async (req, res, next) => {
+//   const fileName = req.file != null ? req.file.filename : null;
+//   let gallery = {};
+//   gallery.title = req.body.title;
+//   gallery.galleryImage = req.file.location;
+
+//   let query = { _id: req.params.id };
+//   Gallery.updateOne(query, gallery, (err, gallery) => {
+//     if (err) {
+//       console.log(err);
+//       res.redirect("back");
+//     } else {
+//       res.redirect("/galleries");
+//     }
+//   });
+// });
 
 // Delete post
 router.delete("/:id", function (req, res) {
