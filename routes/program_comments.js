@@ -8,7 +8,7 @@ require("dotenv").config();
 const fs = require("fs");
 
 // CREATE Comment
-router.post("/:programId/programcommentapi", async (req, res) => {
+router.post("/:programId/createcommentapi", async (req, res) => {
   const program = await Program.findOne({ _id: req.params.programId });
   if (!req.body.token) {
     return res.status(400).json({ error: "reCaptcha token is missing" });
@@ -18,10 +18,10 @@ router.post("/:programId/programcommentapi", async (req, res) => {
     const googleVerifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}
     &response=${req.body.token}`;
 
-    // console.log(googleVerifyUrl);
     const response = await axios.post(googleVerifyUrl);
     const { success } = response.data;
     if (success) {
+      console.log("google response with success ");
       const programComment = new Programcomment();
       programComment.description = req.body.description;
       programComment.name = req.body.name;
@@ -43,7 +43,7 @@ router.post("/:programId/programcommentapi", async (req, res) => {
   }
 });
 
-router.post("/:programId/programcomment", async (req, res) => {
+router.post("/:programId/createcommentapi", async (req, res) => {
   const program = await Program.findOne({ _id: req.params.programId });
 
   const programComment = new Programcomment();
