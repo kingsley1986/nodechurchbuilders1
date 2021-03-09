@@ -58,7 +58,8 @@ router.get("/", async (req, res) => {
       events: events,
       layout: false,
     });
-  } catch {
+  } catch (error) {
+    console.log(error);
     res.redirect("/events");
   }
 });

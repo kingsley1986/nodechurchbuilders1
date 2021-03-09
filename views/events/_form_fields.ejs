@@ -6,15 +6,11 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap-4.1.2/bootstrap.min.css">
-		<link href="/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-		<link rel="stylesheet" type="text/css" href="/plugins/OwlCarousel2-2.3.4/owl.carousel.css">
-		<link rel="stylesheet" type="text/css" href="/plugins/OwlCarousel2-2.3.4/owl.theme.default.css">
-		<link rel="stylesheet" type="text/css" href="/plugins/OwlCarousel2-2.3.4/animate.css">
+
 		<link href="plugins/jquery-datepicker/jquery-ui.css" rel="stylesheet" type="text/css">
 		<link href="/plugins/colorbox/colorbox.css" rel="stylesheet" type="text/css">
 		<link rel="stylesheet" type="text/css" href="/stylesheets/main_styles.css">
 		<link rel="stylesheet" type="text/css" href="/stylesheets/responsive.css">
-		<script type="module" src="/javascripts/main.js"></script>
 		<script type="module" src="/javascripts/bootstrap.js"></script> 
 		<link rel='stylesheet' href='/stylesheets/style.css' />
         <link rel='stylesheet' href='/stylesheets/bootstrap.css' />
@@ -49,7 +45,7 @@
         <div class='col-sm-6'>
           <div class="form-group">
             <div class='input-group date' id='datetimepicker1'>
-              <input name="startingDate" type='text' class="form-control" value="<%=event.startingDate%>" > <%=event.startingDate%></input>
+              <input name="startingDate" type='text' class="form-control" value="<%=event.startingDate%>"> </input>
               <span class="input-group-addon">
                 <span class="glyphicon glyphicon-calendar"></span>
               </span>
@@ -64,7 +60,7 @@
         <div class='col-sm-6'>
           <div class="form-group">
             <div class='input-group date' id='datetimepicker2'>
-              <input name="closingDate" type='text' class="form-control" value="<%=event.closingDate%>" ><%=event.closingDate%></input>
+              <input name="closingDate" type='text' class="form-control" value="<%=event.closingDate%>" ></input>
               <span class="input-group-addon">
                 <span class="glyphicon glyphicon-calendar"></span>
               </span>
@@ -75,7 +71,6 @@
     </div>
   
    
-		<script src="/javascripts/jquery-3.3.1.min.js"></script>
         <script src="/stylesheets/bootstrap-4.1.2/popper.js"></script>
 		<script src="/stylesheets/bootstrap-4.1.2/bootstrap.min.js"></script>
 		<script src="/plugins/greensock/TweenMax.min.js"></script>
@@ -128,6 +123,9 @@
 </style>
 
 <script>
+
+    // alert('kdjkfdjk')
+
   const inpFile = document.getElementById("inpFile");
   const previewContainer = document.getElementById("imagePreview");
   const previewImage = previewContainer.querySelector(".image-preview__image");
@@ -152,6 +150,8 @@
       previewImage.setAttribute("src", "");
     }
   });
+
+
 </script>
 
 
