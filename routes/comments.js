@@ -41,6 +41,42 @@ router.post("/:postId/comment", async (req, res) => {
   }
 });
 
+
+router.post("/:postId/comment/api", async (req, res) => {
+  const post = await Post.findOne({ _id: req.params.postId });
+  if (!req.body.token) {
+    return res.status(400).json({ error: "reCaptcha token is missing" });
+  }
+
+  try {
+    const googleVerifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}
+      &response=${req.body.token}`;
+
+    // console.log(googleVerifyUrl);
+    const response = await axios.post(googleVerifyUrl);
+    const { success } = response.data;
+    if (success) {
+      const comment = new Comment();
+      comment.description = req.body.description;
+      comment.name = req.body.name;
+      comment.post = post._id;
+      if (req.body.description && req.body.name) {
+        await comment.save();
+
+        post.comments.push(comment._id);
+        await post.save();
+
+        res.json(post);
+      }
+      return res.json({ success: true });
+    } else {
+      return res.status(400).json({ error: "Invalid Captcha. Try again." });
+    }
+  } catch (e) {
+    return res.status(400).json({ error: "reCaptcha error." });
+  }
+});
+
 router.delete("/comments/:postId/:commentId", async function (req, res) {
   try {
     const post = await Post.findByIdAndUpdate(
