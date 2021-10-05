@@ -50,6 +50,18 @@ router.get("/api", async (req, res) => {
   });
 });
 
+router.get("/upcoming/api", async (req, res) => {
+  Event.find()
+    .and([{ startingDate: { $gt: new Date() } }])
+    .exec(function (err, events) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(events);
+      }
+    });
+});
+
 router.get("/", async (req, res) => {
   try {
     const events = await Event.find({});

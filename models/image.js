@@ -5,12 +5,12 @@ require("dotenv").config();
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
-const gallerySchema = new mongoose.Schema({
+const imageSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
   },
-  galleryImage: {
+  image: {
     type: String,
     required: true,
   },
@@ -26,5 +26,5 @@ const gallerySchema = new mongoose.Schema({
 //     }
 // })
 
-module.exports = mongoose.model("Gallery", gallerySchema);
+module.exports = mongoose.model("Image", imageSchema);
 module.exports.galleryImageBasePath = galleryImageBasePath;

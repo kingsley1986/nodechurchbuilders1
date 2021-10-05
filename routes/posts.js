@@ -300,7 +300,7 @@ router.post("/edit/:id", upload.single("cover"), async (req, res, next) => {
 //   });
 // });
 
-router.delete("/:id/delete", async (req, res) => {
+router.get("/:id/delete", async (req, res) => {
   console.log("this is splited", process.env.SPLITTED);
   Post.findById(req.params.id, function (err, post) {
     console.log(post.postImage);

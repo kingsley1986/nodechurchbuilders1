@@ -36,9 +36,6 @@ const upload = multer({
     },
   }),
 });
-// console.log(uploadPathWithOriginalName);
-
-// console.log("the thing i need", upload);
 
 router.get("/", async (req, res) => {
   Program.find(function (err, programs) {
@@ -99,44 +96,20 @@ router.get("/new", async (req, res, next) => {
   renderNewPage(res, new Program());
 });
 
-//Create blogpost routes
-// router.post("/create", upload.single("cover"), async (req, res, next) => {
-//   console.log(req.body)
-//   const fileName = req.file != null ? req.file.filename : null;
-//   const program = new Program({
-//     programtype: req.body.programtype,
-//     title: req.body.title,
-//     description: req.body.description,
-//     programImage: req.file.location,
-//   });
-//   try {
-//     console.log(program);
-//     const programs = await program.save();
-//     res.redirect("/programs");
-//   } catch {
-//     if (program.programImage != null) {
-//       removeprogramImage(program.programImage);
-//     }
-//     res.render("programs/new");
-//   }
-// });
-
 router.post("/create", upload.single("cover"), async (req, res, next) => {
-  const fileName = req.file != null ? req.file.filename : null;
   const program = new Program({
     programtype: req.body.programtype,
     title: req.body.title,
     description: req.body.description,
     programImage: req.file.location,
   });
+
   try {
     const programs = await program.save();
     res.redirect("/programs");
-  } catch {
-    if (programs.postImage != null) {
-      removePostImage(programs.postImage);
-    }
+  } catch (error) {
     res.render("programs/new");
+    console.log(error);
   }
 });
 
@@ -153,19 +126,6 @@ router.get("/:id/edit", async (req, res, next) => {
     }
   });
 });
-
-// router.get("/edit/:id", async (req, res) => {
-//   Event.findById(req.params.id, function (err, event) {
-//     if (!event) {
-//       return next(new Error("Could not load Document"));
-//     } else {
-//       res.render("events/edit", {
-//         event: event,
-//         layout: false,
-//       });
-//     }
-//   });
-// });
 
 router.post("/edit/:id", upload.single("cover"), async (req, res, next) => {
   Program.findById(req.params.id, function (err, program) {
@@ -224,31 +184,6 @@ router.post("/edit/:id", upload.single("cover"), async (req, res, next) => {
   });
 });
 
-// router.delete("/:id/delete", async (req, res) => {
-//   const ObjectId = mongoose.Types.ObjectId;
-//   let query = { _id: new ObjectId(req.params.id) };
-//   console.log("I have been hitted");
-
-//   Program.deleteOne(query, async (err) => {
-//     if (err) {
-//       console.log(err);
-//     }
-//     var params = {
-//       Bucket: bucketname,
-//       Key: Program.programImage,
-//     };
-//     try {
-//       await s3
-//         .deleteObject(params, function (err, data) {
-//           if (err) console.log(err, err.stack);
-//           else console.log("Response:", data);
-//         })
-//         .promise();
-//     } catch (e) {}
-//     res.send("Success");
-//   });
-// });
-
 router.delete("/:id", async (req, res) => {
   Program.findById(req.params.id, function (err, program) {
     var splittedKey = program.programImage.replace(process.env.SPLITTED, "");
@@ -282,25 +217,6 @@ router.delete("/:id", async (req, res) => {
     });
   });
 });
-
-// router.delete("/:id", (req, res) => {
-//   console.log(req.params.id);
-//   const id = req.params.id;
-//   Program.findByIdAndDelete(id)
-//     .then((results) => {
-//       res.json({ redirect: "/programs" });
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// });
-
-//Removes unsaved post image
-function removeprogramImage(fileName) {
-  fs.unlink(path.join(uploadPath, fileName), (err) => {
-    if (err) console.log(err);
-  });
-}
 
 //Handles the redirects
 async function renderNewPage(res, program, hasError = false) {

@@ -39,13 +39,20 @@ var programCommentRouter = require("./routes/program_comments");
 var galleryRouter = require("./routes/galleries");
 var adminRouter = require("./routes/admin.router");
 
-mongoose.connect(process.env.MONGODB_URI || process.env.DATABASE_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-const db = mongoose.connection;
-db.on("error", (error) => console.log(error));
-db.once("open", () => console.log("connectd to Mongoose"));
+try {
+  mongoose.connect(
+    process.env.MONGODB_URI || process.env.DATABASE_URL,
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+      useFindAndModify: true,
+    },
+    () => console.log("MongoDB connected Successfully")
+  );
+} catch (error) {
+  console.log("could not connect to mongodDB");
+}
 
 global.moment = require("moment");
 

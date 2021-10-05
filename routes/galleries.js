@@ -39,6 +39,11 @@ const upload = multer({
   }),
 });
 
+// New Gallery routes
+router.get("/new", async (req, res, next) => {
+  renderNewPage(res, new Gallery());
+});
+
 // Get all Image Galleries API'S
 router.get("/api", async (req, res) => {
   Gallery.find(function (err, galleries) {
@@ -76,26 +81,36 @@ router.get("/:id", async (req, res) => {
   );
 });
 
-// New Gallery routes
-router.get("/new", async (req, res, next) => {
-  renderNewPage(res, new Gallery());
-});
-
 // Create Gallery routes
-router.post("/", upload.single("file"), async (req, res, next) => {
-  const fileName = req.file != null ? req.file.filename : null;
+// router.post("/", upload.single("file"), async (req, res, next) => {
+//   const fileName = req.file != null ? req.file.filename : null;
+//   const gallery = new Gallery({
+//     title: req.body.title,
+//     galleryImage: req.file.location,
+//   });
+//   try {
+//     const newGallery = await gallery.save();
+//     res.redirect("/galleries");
+//   } catch {
+//     if (gallery.galleryImage != null) {
+//       removeGalleryImage(gallery.galleryImage);
+//     }
+//     renderNewPage(res, gallery, true);
+//   }
+// });
+
+router.post("/create", upload.single("cover"), async (req, res, next) => {
   const gallery = new Gallery({
     title: req.body.title,
     galleryImage: req.file.location,
   });
+
   try {
-    const newGallery = await gallery.save();
+    const programs = await gallery.save();
     res.redirect("/galleries");
-  } catch {
-    if (gallery.galleryImage != null) {
-      removeGalleryImage(gallery.galleryImage);
-    }
-    renderNewPage(res, gallery, true);
+  } catch (error) {
+    res.render("programs/new");
+    console.log(error);
   }
 });
 
