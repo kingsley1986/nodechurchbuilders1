@@ -38,6 +38,7 @@ var contactformRouter = require("./routes/contact_forms");
 var programCommentRouter = require("./routes/program_comments");
 var galleryRouter = require("./routes/galleries");
 var adminRouter = require("./routes/admin.router");
+var contactusRouter = require("./routes/contact_us");
 
 try {
   mongoose.connect(
@@ -139,6 +140,7 @@ app.use("/contact_form", contactformRouter);
 app.use("/galleries", galleryRouter);
 app.use("/programs", programCommentRouter);
 app.use("/programs", programimageRouter);
+app.use("/contactus", contactusRouter);
 
 app.use("/admin", adminRouter);
 
